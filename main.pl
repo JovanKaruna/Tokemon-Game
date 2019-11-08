@@ -37,6 +37,10 @@ start :-
     init_map, init_player,!.
 
 help :-
+	\+game(_),
+	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
+
+help :-
     write('Available commands:'),nl,
     write('    start. -- start the game!'),nl,
     write('    help. -- show available commands'),nl,
@@ -75,6 +79,7 @@ quit :-
 	retract(game(_)),
 	retract(lebar(_)),
 	retract(tinggi(_)),
+	retract(inventory(_,_)),
 	write('Game selesai.'),nl,!.
 
 /* Movement n,e,w,s*/
@@ -137,3 +142,17 @@ s :-
 	write('Anda bergerak ke selatan, kamu berada pada '),
 	(isGym(X,NewY) -> write('Gym Center.'); isMeteorite(X,NewY) -> write('Meteorite');write('tanah kosong.')),nl,
 	asserta(player(X,NewY)), !.
+
+
+/* status. */
+status :-
+	\+game(_),
+	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
+
+status :-
+	findall(Tokemon,inventory(Tokemon,_),LTokemon),
+	inverse(LTokemon,ListInv),write('Your Tokemon:'),
+	printStatus(ListInv),
+	findall(Tokemon,legendary(Tokemon,_),Llegendary),
+	inverse(Llegendary,ListInvlegendary),nl,
+	write('Your Enemy:'),printLegendary(ListInvlegendary),!.

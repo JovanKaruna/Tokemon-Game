@@ -1,3 +1,5 @@
+:- include('map.pl').
+
 start :-
     write(' _______    _                              '),nl,
     write('|__   __|  | |                             '),nl,
@@ -23,7 +25,11 @@ start :-
     write('sudah ditangkap pemerintah. Pemain  akan diterjunkan  langsung ke  pulau Tokeland'),nl,
     write('yang sekarang  sudah menjadi sarang para tokemon untuk mengungkapkan misteri para'),nl,
     write('Tokemon.'),nl,nl,
-    help.
+    help,
+    write('Legends:'),nl,
+    write('    - X = Pagar'),nl,
+    write('    - P = Player'),nl,
+    write('    - G = Gym').
 
 help :-
     write('Available commands:'),nl,
@@ -36,4 +42,7 @@ help :-
     write('    status. -- show your status'),nl,
     write('    save(Filename). -- save your game'),nl,
     write('    load(Filename). -- load previously saved game'),nl,nl.
+
+map :-
+    showMap(0,0,10,10).
 

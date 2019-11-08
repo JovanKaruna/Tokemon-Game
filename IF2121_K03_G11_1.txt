@@ -1,0 +1,45 @@
+1. Latar Cerita
+Pada suatu hari, bumi tiba-tiba dihujani meteor. Serangan terakhir meteor jatuh di salah satu pulau di bumi yang bernama Tokeland. Setelah itu muncul sekawanan monster yang berasal dari pecahan meteor tersebut. Tiba-tiba monster tersebut bersifat liar dan menyerang manusia di sekitarnya. Monster yang menyerang para manusia kemudian dikenal dengan  nama “Tokemon”.
+
+Pemain utama memiliki kekuatan untuk menjinakan tokemon setelah mengalahkannya. Pemerintah mengetahui hal ini dan memanggil tokoh utama untuk diberi tugas menyelamatkan dunia.  Pemain utama diberikan pilihan oleh Presiden untuk menggunakan tokemon yang sudah ditangkap pemerintah.
+
+Tokemon yang sudah ditangkap pemerintah memiliki tiga tipe yang berbeda masing-masingnya. Tiga tipe tersebut yaitu fire, water, dan leave. Kemudian Pemain akan menentukan pilihannya untuk menjadi tokemon pertamanya. Setelah itu Pemain akan diterjunkan langsung ke pulau Tokeland yang sekarang sudah menjadi sarang para tokemon untuk mengungkapkan misteri para tokemon.
+
+Kemudian dari penelitian pemerintah terdapat dua jenis tokemon yaitu normal dan legendary. Dari pengamatan tersebut hanya jenis legendary yang mengerti perkataan manusia. Maka dari itu pemain utama bertujuan untuk mengalahkan semua legendary tokemon.
+
+
+2. Alur Permainan
+Karakter yang digunakan pemain akan dikontrol sesuai dengan aturan yang terdapat pada spesifikasi Tugas Besar 1 Logika Komputasional. Karakter akan menjelajah di dalam area yang telah ditentukan. Area tersebut terdiri dari dua buah map. Map pertama adalah main map. Main map adalah peta yang akan pertama kali dijelajahi oleh pemain. Hal ini untuk mencari semua petunjuk dari para Legendary Tokemon. Map kedua adalah Boss map yaitu map yang akan muncul ketika pemain telah mendapatkan semua Legendary Tokemon. 
+
+Main Map
+XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X-------------M------------X
+X-----G--------------G-----X
+X--------------------------X
+X-----------G-------M------X
+X--------------------------X
+X-----M----------G---------X
+X--------------------------X
+X-------G------------M-----X
+X------------------G-------X
+X-----------G--------------X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+Boss Map
+XXXXXXXXXXXXXXXX
+X--G-------M---X
+X--------------X
+X------G-------X
+X--------------X
+X---------M----X
+XXXXXXXXXXXXXXXX
+
+Karakter akan mengikuti mekanisme spesifikasi yaitu memiliki sebuah Normal Tokemon dan memiliki tipe biasa (fire, water, leaves) dan tipe tambahan(Ligthning). Di berbagai tempat akan diletakan Gym yang berguna sebagai tempat untuk healing karakter.
+
+Selama menjelajah area karakter dapat bertemu dengan berbagai Tokemon liar. Ketika karakter bertemu dengan Tokemon liar akan terdapat dua aksi yaitu “kabur” atau “bertarung”. Kemudian ketika berhasil mengalahkan tokemon tersebut dapat menjadi milik karakter yang dikendalikan pemain. Namun terdapat batasan slot untuk menampung tokemon.
+
+Dari tokemon tersebut memiliki sistem evolve dan fusion. Dimana evolve akan menjadikan stats tokemon meningkat. Untuk sistem fusion akan membuat beberapa buah tokemon menjadi sebuah tokemon baru yang lebih kuat dan hanya dapat dilakukan di Meteor Site(M).
+
+Karakter akan bermain menjelajah di area untuk menemukan xx buah Legendary Tokemon yang tersebar di berbagai area.
+
+

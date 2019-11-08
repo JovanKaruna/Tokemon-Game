@@ -1,29 +1,56 @@
-mapAtas(X,_) :-
-    X =:= 0,
+:- include('player.pl').
+:- dynamic(player/2).
+:- dynamic(lebar/1).
+:- dynamic(tinggi/1).
+:- dynamic(game/1).
+
+init_map:-
+    random(15,30,L),
+    random(10,25,T),
+    asserta(lebar(L)),
+    asserta(tinggi(T)),
+    asserta(game(1)).
+
+isGym(X,Y):-
+    ((Y =:= 2),(X =:= 7) -> !);((Y =:= 18),(X =:= 20) -> !)
+    ;((Y =:= 12),(X =:= 18) -> !);((Y =:= 9),(X =:= 3) -> !). 
+
+isMeteorite(X,Y):-
+    ((Y =:= 4),(X =:= 19) -> !);((Y =:= 7),(X =:= 10) -> !)
+    ;((Y =:= 14),(X =:= 5) -> !).
+
+mapAtas(_,Y) :-
+    Y=:=0
+    ,!.
+
+mapKiri(X,_) :-
+    X=:=0,
     !.
 
-mapKiri(_,Y) :-
-    Y =:= 0,
+mapBawah(_,Y) :-
+    tinggi(T),
+    YMax is T+1,
+    Y=:=YMax,
+    !.
+mapKanan(X,_) :-
+    lebar(L),
+    XMax is L+1,
+    X=:=XMax,
     !.
 
-mapKanan(_,Y,Lebar) :-
-    NewL is Lebar + 1,
-    NewL =:= Y,
-    !.
-
-mapBawah(X,_,Tinggi) :-
-    NewT is Tinggi + 1,
-    X =:= NewT,
-    !.
-
-
-showMap(X,Y,Tinggi,Lebar) :-
-    mapAtas(X,Y),!, write('X'), NewY is Y + 1,((NewY =:= (Lebar + 2) -> nl, showMap(X+1,0,Tinggi,Lebar)); (showMap(X,NewY,Tinggi,Lebar))).
-showMap(X,Y,Tinggi,Lebar) :-
-    mapBawah(X,Y,Tinggi), !, write('X'),NewY is Y + 1,((NewY =:= (Lebar + 2) -> nl); (showMap(X,NewY,Tinggi,Lebar))).
-showMap(X,Y,Tinggi,Lebar) :-
-    mapKiri(X,Y), !, write('X'), NewY is Y + 1, showMap(X,NewY,Tinggi,Lebar).
-showMap(X,Y,Tinggi,Lebar) :-
-    mapKanan(X,Y,Lebar), !, write('X'),nl, showMap(X+1,0,Tinggi,Lebar).
-showMap(X,Y,Tinggi,Lebar):-
-        write('-'),!, showMap(X,Y+1,Tinggi,Lebar).
+showMap(X,Y) :-
+    mapKanan(X,Y), !, write('X').
+showMap(X,Y) :-
+    mapKiri(X,Y), !, write('X').
+showMap(X,Y) :-
+    mapAtas(X,Y), !, write('X').
+showMap(X,Y) :-
+    mapBawah(X,Y), !, write('X').
+showMap(X,Y) :-
+    player(X,Y), !, write('P').
+showMap(X,Y) :-
+    isGym(X,Y),!, write('G').
+showMap(X,Y) :-
+    isMeteorite(X,Y), !, write('M').
+showMap(_,_) :-
+	write('-').

@@ -3,13 +3,15 @@
 :- dynamic(lebar/1).
 :- dynamic(tinggi/1).
 :- dynamic(game/1).
+:- dynamic(heal/1).
 
 init_map:-
     random(15,30,L),
     random(10,25,T),
     asserta(lebar(L)),
     asserta(tinggi(T)),
-    asserta(game(1)).
+    asserta(game(1)),
+    asserta(heal(1)).
 
 isGym(X,Y):-
     ((Y =:= 2),(X =:= 7) -> !);((Y =:= 18),(X =:= 20) -> !)

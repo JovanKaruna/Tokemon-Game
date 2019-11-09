@@ -152,7 +152,26 @@ status :-
 status :-
 	findall(Tokemon,inventory(Tokemon,_),LTokemon),
 	inverse(LTokemon,ListInv),write('Your Tokemon:'),
-	printStatus(ListInv),
-	findall(Tokemon,legendary(Tokemon,_),Llegendary),
-	inverse(Llegendary,ListInvlegendary),nl,
-	write('Your Enemy:'),printLegendary(ListInvlegendary),!.
+	printStatus(ListInv),nl,
+	findall(Tokemon,legendary(Tokemon,_),Llegendary),nl,
+	write('Your Enemy:'),printLegendary(Llegendary),!.
+
+/* cure */
+cure :-
+	\+game(_),
+	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
+
+cure :-
+	player(X,Y), \+isGym(X,Y),
+	write('Command "cure" hanya bisa dilakukan saat berada di Gym Center.'), nl,!.
+
+cure :-
+	player(X,Y), isGym(X,Y), \+heal(1), 
+	write('Penggunaan cure hanya bisa dilakukan sekali saja dalam satu game.'),nl,!.
+
+cure :-
+	player(X,Y), isGym(X,Y), heal(1), findall(Tokemon,inventory(Tokemon,_),LTokemon),
+	inverse(LTokemon,ListInv),write('Tokemon di inventory telah di heal sampai penuh.'),
+	healing(ListInv),nl,
+	retract(heal(1)),asserta(heal(0)),!.
+

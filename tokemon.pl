@@ -19,21 +19,21 @@
 
   /* Jenis Tokemon */
   normal(alphamon).
-  legendary(betamon).
   normal(cupmon).
   normal(donutmon).
   normal(eclairmon).
   normal(froyomon).
   normal(gingermon).
   normal(honeymon).
-  legendary(icemon).
   normal(jellymon).
   normal(kitmon).
   normal(lollimon).
   normal(marshmon).
   normal(nougatmon).
-  legendary(oreomon).
   normal(piemon).
+  legendary(betamon).
+  legendary(icemon).
+  legendary(oreomon).
 
   /* Health Tokemon */
   health(alphamon,50).

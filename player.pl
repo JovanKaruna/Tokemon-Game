@@ -50,6 +50,11 @@ printLegendary([H|T]):-
 	write('Health: '),legendary(H,Health),write(Health),nl,
     write('Type: '),tipe(H,Type), write(Type) ,nl,printLegendary(T),!.
 
+healing([]):-!.
+healing([H|T]):-
+    inventory(H,Health), retract(inventory(H,Health)), health(H,MaxHealth),
+    asserta(inventory(H,MaxHealth)), healing(T),!.
+
 /* inverse(A,B) : A dan B merupakan sebuah list yang berisi beberapa angka nilai rules
 akan bernilai yes jika A merupakan kebalikan dari list B dan no jika tidak. */
 rev([], B, B, []).

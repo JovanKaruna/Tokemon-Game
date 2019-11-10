@@ -88,5 +88,11 @@
   damage(nougatmon,6).
   damage(oreomon,100).
   damage(piemon,8).
+
+
+  specialmove(alphamon,overheat,5).
+  specialmove(froyomon,leafblade,5).
+  specialmove(kitmon,hydropump,50).
+  specialmove(jellymon,megadrain,5).
   
   

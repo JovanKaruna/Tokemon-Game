@@ -1,4 +1,4 @@
-:- include('player.pl').
+:- include('battle.pl').
 :- dynamic(player/2).
 :- dynamic(lebar/1).
 :- dynamic(tinggi/1).

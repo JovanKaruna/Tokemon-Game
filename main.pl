@@ -153,6 +153,7 @@ n :-
 	Y =:= 1,
 	write('Di sebelah utara, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
 	(battle(3) -> retract(battle(3)),!;!).
+	
 n :-
 	retract(player(X,Y)),
 	Y > 1,
@@ -185,14 +186,13 @@ e  :-
 	write('Command ini tidak dapat dilakukan ketika sedang dalam battle. '),nl,!.
 
 e  :-
-	(battle(3) -> retract(battle(3)),!);
 	player(X,_),
 	lebar(L),
 	X =:= L,
 	write('Di sebelah timur, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, 
 	(battle(3) -> retract(battle(3)),!;!).
+
 e :-
-	(battle(3) -> retract(battle(3)),!);
 	retract(player(X,Y)),
 	lebar(L),
 	X < L, NewX is X+1,
@@ -258,7 +258,8 @@ s :-
 	player(_,Y),
 	tinggi(T),
 	Y =:= T,
-	write('Di sebelah selatan, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, !.
+	write('Di sebelah selatan, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
+	(battle(3) -> retract(battle(3)),!;!).
 
 s :-
 	retract(player(X,Y)),

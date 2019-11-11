@@ -85,7 +85,7 @@ attack :-
     retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
 	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs, write(NewHealth),nl,
+	NewHealth is Health - DamagetoUs, 
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 

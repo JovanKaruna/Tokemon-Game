@@ -92,7 +92,7 @@ retractinventory([]):-!.
 retractinventory([H|T]):-
     retract(inventory(H,_,_,_)),retractinventory(T),!.
 
-retractlegendary([]):-!.
+retractlegendary([]):- !.
 retractlegendary([H|T]):-
     retract(legendary(H,_)),retractlegendary(T),!.
 

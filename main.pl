@@ -121,9 +121,13 @@ quit :-
 	retract(lebar(_)),
 	retract(tinggi(_)),
 	findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
-	findall(legend,legendary(legend,_),Llegend),
+	findall(Legend,legendary(Legend,_),Llegend),
 	retractinventory(LTokemon),
 	retractlegendary(Llegend),
+	(inbattle(_,_,_,_) -> retract(inbattle(_,_,_,_));!),
+	(enemy(_,_,_,_) -> retract(enemy(_,_,_,_));!),
+	(battle(_) -> retract(battle(_));!),
+	(special(_) -> retract(special(_));!),
 	write('Game selesai.'),nl,!.
 
 /* Movement n,e,w,s*/
@@ -153,7 +157,7 @@ n :-
 	Y =:= 1,
 	write('Di sebelah utara, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
 	(battle(3) -> retract(battle(3)),!;!).
-	
+
 n :-
 	retract(player(X,Y)),
 	Y > 1,

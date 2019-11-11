@@ -72,7 +72,7 @@
   tipe(piemon,lightning).
   
   /* Normal Attack Tokemon */
-  damage(alphamon,8).
+  damage(alphamon,1).
   damage(betamon,40).
   damage(cupmon,2).
   damage(donutmon,10).
@@ -90,8 +90,8 @@
   damage(piemon,8).
 
 
-  specialmove(alphamon,overheat,5).
-  specialmove(froyomon,leafblade,5).
+  specialmove(alphamon,overheat,50).
+  specialmove(froyomon,leafblade,50).
   specialmove(kitmon,hydropump,50).
   specialmove(jellymon,megadrain,5).
   

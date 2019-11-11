@@ -65,7 +65,7 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	asserta(inventory(X,Health,MaxHealth,Level)),
+	addTokemon(X,Health,MaxHealth,Level),
 	retract(battle(2)),
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!).
@@ -82,12 +82,29 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	damage(Y,DamagetoUs),
+    retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
 	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs,
-	retract(inbattle(X,Health,MaxHealth,Level)),
-	asserta(inbattle(X,NewHealth,MaxHealth,Level)),
-	writeBattle,!.
+	NewHealth is Health - DamagetoUs, write(NewHealth),nl,
+	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
+    asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
+
+faints :-
+    \+battle(2),
+    write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
+
+faints :-
+    battle(2),
+    \+inbattle(X,0,_,_),
+    write('Your '),write(X),write(' is still strong to fight!'),nl,!.
+
+faints :-
+    battle(2),
+    retract(inbattle(X,_,_,_)),
+    write('Your '),write(X),write(' fainted, choose another tokemon!'),
+    retract(battle(2)),
+    asserta(battle(0)),nl,!.
+
 
 specialattack :-
 	\+battle(2),

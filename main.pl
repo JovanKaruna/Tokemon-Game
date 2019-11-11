@@ -67,7 +67,7 @@ help :-
 help  :-
 	battle(0),
 	write('Ketik "pick(X).", X diganti dengan AvailableTokemon yang ada diatas.'),nl,
-	write('untuk mengetahui Available Tokemon ketik "status.".'),nl,!.
+	write('untuk mengetahui Available Tokemon ketik "availableTokemon.".'),nl,!.
 
 help :-
 	battle(1),
@@ -336,8 +336,7 @@ fight :-
 
 fight :-
 	battle(1), write('Choose your Tokemon !'),nl,nl,
-	write('Available Tokemons: '),findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
-	printAvailable(LTokemon),
+	availableTokemon,
 	retract(battle(1)),
 	asserta(battle(0)),
 	asserta(enemy(jellymon,10,10,1)),
@@ -360,6 +359,10 @@ run :-
 	random(1,10,Peluang),
 	(Peluang >= 5 -> write('Kamu berhasil kabur...'),nl,retract(battle(_));
 	write('Kamu gagal untuk kabur!'),nl,nl,	fight),!.
+
+availableTokemon :-
+	write('Available Tokemons: '),findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
+	printAvailable(LTokemon),!.
 
 printAvailable([]):- nl,!.
 printAvailable([H|T]):-

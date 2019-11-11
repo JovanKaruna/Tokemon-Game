@@ -90,7 +90,7 @@ healing([H|T]):-
 
 retractinventory([]):-!.
 retractinventory([H|T]):-
-    retract(inventory(H,_,_,_)),quitinventory(T),!.
+    retract(inventory(H,_,_,_)),retractinventory(T),!.
 
 retractlegendary([]):-!.
 retractlegendary([H|T]):-

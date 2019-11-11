@@ -57,7 +57,7 @@ help :-
 help :-
 	battle(3),
 	write('"capture." untuk menangkap tokemon, "drop." jika inventory sudah full'),nl,
-	write('"n.","e.","w.","s." jika tidak ingin menangkap tokemon.'),nl,nl,!.
+	write('"w.","a.","s.","d." jika tidak ingin menangkap tokemon.'),nl,nl,!.
 
 
 help :-
@@ -78,7 +78,7 @@ help :-
     write('    start. -- start the game!'),nl,
     write('    help. -- show available commands'),nl,
     write('    quit. -- quit the game'),nl,
-    write('    n. s. e. w. -- move'),nl,
+    write('    w. a. s. d. -- move'),nl,
     write('    map. -- look at the map'),nl,
     write('    heal -- cure Tokemon in inventory if in gym center'),nl,
     write('    status. -- show your status'),nl,
@@ -131,34 +131,34 @@ quit :-
 	write('Game selesai.'),nl,!.
 
 /* Movement n,e,w,s*/
-n :-
+w :-
 	choose(_),
 	write('Pilih dulu tokemon yang akan menjadi partnermu, ketik "help." untuk mengetahui caranya.'),nl,!.
 
-n :-
+w :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 
-n:-
+w:-
 	battle(0),
 	write('Command ini tidak dapat dilakukan setelah command di dalam battle.'),nl,!.
 
-n :-
+w :-
 	battle(1),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon. '),nl,!.
 
 
-n :-
+w :-
 	battle(2),
 	write('Command ini tidak dapat dilakukan ketika sedang dalam battle. '),nl,!.
 
-n :-
+w :-
 	player(_,Y),
 	Y =:= 1,
 	write('Di sebelah utara, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
 	(battle(3) -> retract(battle(3)),!;!).
 
-n :-
+w :-
 	retract(player(X,Y)),
 	Y > 1,
 	NewY is Y-1,
@@ -168,35 +168,35 @@ n :-
 	write('Anda bergerak ke utara, kamu berada pada '),printPlace),
 	(battle(3) -> retract(battle(3)),!;!).
 
-e :-
+d :-
 	choose(_),
 	write('Pilih dulu tokemon yang akan menjadi partnermu, ketik "help." untuk mengetahui caranya.'),nl,!.
 
-e :-
+d :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 
-e :-
+d :-
 	battle(0),
 	write('Command ini tidak dapat dilakukan setelah command di dalam battle.'),nl,!.
 
-e :-
+d :-
 	battle(1),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon. '),nl,!.
 
 
-e  :-
+d  :-
 	battle(2),
 	write('Command ini tidak dapat dilakukan ketika sedang dalam battle. '),nl,!.
 
-e  :-
+d  :-
 	player(X,_),
 	lebar(L),
 	X =:= L,
 	write('Di sebelah timur, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, 
 	(battle(3) -> retract(battle(3)),!;!).
 
-e :-
+d :-
 	retract(player(X,Y)),
 	lebar(L),
 	X < L, NewX is X+1,
@@ -206,31 +206,31 @@ e :-
 	write('Anda bergerak ke timur, kamu berada pada '),printPlace),
 	(battle(3) -> retract(battle(3)),!;!).
 
-w :-
+a :-
 	choose(_),
 	write('Pilih dulu tokemon yang akan menjadi partnermu, ketik "help." untuk mengetahui caranya.'),nl,!.
 
-w :-
+a :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
-w :-
+a :-
 	battle(0),
 	write('Command ini tidak dapat dilakukan setelah command di dalam battle.'),nl,!.
 
-w :-
+a :-
 	battle(1),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon. '),nl,!.
 
-w  :-
+a  :-
 	battle(2),
 	write('Command ini tidak dapat dilakukan ketika sedang dalam battle. '),nl,!.
 
-w :-
+a :-
 	player(X,_),
 	X =:= 1,
 	write('Di sebelah barat, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, 
 	(battle(3) -> retract(battle(3)),!;!).
-w :-
+a :-
 	retract(player(X,Y)),
 	X > 1, NewX is X-1,
 	asserta(player(NewX,Y)),

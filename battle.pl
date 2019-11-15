@@ -4,6 +4,7 @@
 :- dynamic(enemy/4).
 :- dynamic(special/1).
 :- dynamic(specialenemy/1).
+:- dynamic(multiplier/1).
 
 init_battle:-
     asserta(battle(1)).
@@ -57,6 +58,7 @@ attack :-
 	\+battle(2),
 	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
 
+% player attack dan lawan mati
 attack :-
 	battle(2),
 	inbattle(X,_,_,_),
@@ -71,32 +73,46 @@ attack :-
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!).
 
+% player attack 1.5 dan lawan mati
+attack :-
+	battle(2),
+	multiplier(1),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 1.5,
+	enemy(Y,EnemyHealth,_,_),
+	DamageToEnemy >= EnemyHealth,
+	write(Y),write(' faints! Do you want to capture '),write(Y),
+	write('?  (capture/0 to capture, otherwise move away.)'),nl,
+	retract(inbattle(X,Health,MaxHealth,Level)),
+	addTokemon(X,Health,MaxHealth,Level),
+	retract(battle(2)),
+	asserta(battle(3)),
+	(special(1) -> retract(special(1)),!;!).
+
+% player attack 0.5 dan lawan mati
+attack :-
+	battle(2),
+	multiplier(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 0.5,
+	enemy(Y,EnemyHealth,_,_),
+	DamageToEnemy >= EnemyHealth,
+	write(Y),write(' faints! Do you want to capture '),write(Y),
+	write('?  (capture/0 to capture, otherwise move away.)'),nl,
+	retract(inbattle(X,Health,MaxHealth,Level)),
+	addTokemon(X,Health,MaxHealth,Level),
+	retract(battle(2)),
+	asserta(battle(3)),
+	(special(1) -> retract(special(1)),!;!).
+
+% player attack dan lawan special atack
 attack :-
 	specialenemy(1),
 	battle(2),
-	inbattle(X,Health,MaxHealth,Level),
-	damage(X,DamageToEnemy),
-	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
-	retract(enemy(Y,Ene
-		myHealth,_,LevelEnemy)),
-	DamageToEnemy<EnemyHealth,
-	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
-	CurrentHealth is EnemyHealth - DamageToEnemy,
-	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
-	writeBattle,
-	random(1,8,Specialenemy),
-	(Specialenemy >= 1 -> specialattack_enemy,!;
-	damage(Y,DamagetoUs),
-    retract(inbattle(X,Health,MaxHealth,Level)),
-	write(Y),write(' attacks!'),nl,
-	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs, 
-	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
-    asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!),.
-
-attack :-
-	battle(2),
-	inbattle(X,Health,MaxHealth,Level),
+	multiplier(0),
+	inbattle(X,_,_,_),
 	damage(X,DamageToEnemy),
 	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
 	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
@@ -105,6 +121,103 @@ attack :-
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
+	random(1,8,Specialenemy),
+	(Specialenemy >= 1 -> specialattack_enemy;
+	enemyattack),!.
+
+% player attack 1.5 dan lawan special attack 0.5
+attack :-
+	specialenemy(1),
+	multiplier(1),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 1.5,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	random(1,8,Specialenemy),
+	(Specialenemy >= 1 -> specialattack_enemy;
+	enemyattack),!.
+
+% player attack 0.5 dan lawan special attack 1.5
+attack :-
+	specialenemy(1),
+	multiplier(2),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 0.5,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	random(1,8,Specialenemy),
+	(Specialenemy >= 1 -> specialattack_enemy;
+	enemyattack),!.
+
+% player attack dan lawan attack 
+attack :-
+	battle(2),
+	multiplier(0),
+	inbattle(X,_,_,_),
+	damage(X,DamageToEnemy),
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
+
+% player attack 1.5 dan lawan attack 0.5 
+attack :-
+	battle(2),
+	multiplier(1),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 1.5,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
+
+%  player attack 0.5 dan lawan attack 1.5
+attack :-
+	battle(2),
+	multiplier(2),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 0.5,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
+
+% enemy attack biasa
+enemyattack :-
+	battle(2),
+	multiplier(0),
+	enemy(Y,_,_,_),
+	inbattle(X,Health,MaxHealth,Level),
 	damage(Y,DamagetoUs),
     retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
@@ -113,6 +226,35 @@ attack :-
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 
+% enemy attack 0.5
+enemyattack :-
+	battle(2),
+	multiplier(1),
+	enemy(Y,_,_,_),
+	inbattle(X,Health,MaxHealth,Level),
+	damage(Y,RealDamagetoUs),
+	DamagetoUs is RealDamagetoUs * 0.5,
+    retract(inbattle(X,Health,MaxHealth,Level)),
+	write(Y),write(' attacks!'),nl,
+	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
+	NewHealth is Health - DamagetoUs, 
+	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
+    asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
+
+% enemy attack 1.5
+enemyattack :-
+	battle(2),
+	multiplier(2),
+	enemy(Y,_,_,_),
+	inbattle(X,Health,MaxHealth,Level),
+	damage(Y,RealDamagetoUs),
+	DamagetoUs is RealDamagetoUs * 1.5,
+    retract(inbattle(X,Health,MaxHealth,Level)),
+	write(Y),write(' attacks!'),nl,
+	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
+	NewHealth is Health - DamagetoUs, 
+	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
+    asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 
 faints :-
     \+battle(2),
@@ -167,8 +309,10 @@ specialattack_enemy :-
 	\+specialenemy(1),
 	write('Special attacks can only be used once per battle!'),nl,!.
 
+% enemy attack special attack
 specialattack_enemy :-
 	battle(2),
+	multiplier(0),
 	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
@@ -178,9 +322,42 @@ specialattack_enemy :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('It dealt '),write(DamageToUs),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is Health - DamageToUs,
-	(DamageToUs < Health -> asserta(inbattle(Y,CurrentHealth,MaxHealth,Level));
-	DamageToUs >= Health -> asserta(inbattle(Y,0,MaxHealth,Level))),
-	writeBattle,!.
+	(DamageToUs < Health -> asserta(inbattle(Y,CurrentHealth,MaxHealth,Level)),writeBattle;
+	DamageToUs >= Health -> asserta(inbattle(Y,0,MaxHealth,Level)),writeBattle,faints),!.
+
+% enemy attack special attack * 0.5
+specialattack_enemy :-
+	battle(2),
+	multiplier(1),
+	specialenemy(1),
+	retract(specialenemy(1)),
+	enemy(X,_,_,_),
+	specialmove(X,Move,RealDamageToUs),
+	DamageToUs is RealDamageToUs * 0.5,
+	inbattle(Y,Health,MaxHealth,Level),
+	retract(inbattle(Y,Health,_,Level)),
+	write(X), write(' uses '), write(Move),write('!'),nl,
+	write('It dealt '),write(DamageToUs),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is Health - DamageToUs,
+	(DamageToUs < Health -> asserta(inbattle(Y,CurrentHealth,MaxHealth,Level)),writeBattle;
+	DamageToUs >= Health -> asserta(inbattle(Y,0,MaxHealth,Level)),writeBattle,faints),!.
+
+% enemy attack special attack * 1.5
+specialattack_enemy :-
+	battle(2),
+	multiplier(2),
+	specialenemy(1),
+	retract(specialenemy(1)),
+	enemy(X,_,_,_),
+	specialmove(X,Move,RealDamageToUs),
+	DamageToUs is RealDamageToUs * 1.5,
+	inbattle(Y,Health,MaxHealth,Level),
+	retract(inbattle(Y,Health,_,Level)),
+	write(X), write(' uses '), write(Move),write('!'),nl,
+	write('It dealt '),write(DamageToUs),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is Health - DamageToUs,
+	(DamageToUs < Health -> asserta(inbattle(Y,CurrentHealth,MaxHealth,Level)),writeBattle;
+	DamageToUs >= Health -> asserta(inbattle(Y,0,MaxHealth,Level)),writeBattle,faints),!.
 
 capture :-
 	\+battle(3),
@@ -230,3 +407,42 @@ drop(X) :-
 	write('You dropped '), write(X),nl,nl,
 	delTokemon(X),
 	capture,!.
+
+effective :-
+	asserta(multiplier(0)).
+
+effective :-
+	inbattle(X,_,_,_),
+	enemy(Y,_,_,_),
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
+	Tipe_X = "fire", Tipe_Y = "leaves",
+	retract(multiplier(0)),
+	asserta(multiplier(1)).
+
+effective :-
+	inbattle(X,_,_,_),
+	enemy(Y,_,_,_),
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
+	Tipe_X = "leaves", Tipe_Y = "water",
+	asserta(multiplier(1)).
+
+effective :-
+	inbattle(X,_,_,_),
+	enemy(Y,_,_,_),
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
+	Tipe_X = "water", Tipe_Y = "fire",
+	asserta(multiplier(1)).
+
+effective :-
+	inbattle(X,_,_,_),
+	enemy(Y,_,_,_),
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
+	Tipe_X = "lightning", Tipe_Y = "water",
+	asserta(multiplier(1)).
+
+effective :-
+	inbattle(X,_,_,_),
+	enemy(Y,_,_,_),
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
+	Tipe_X = "lightning", Tipe_Y = "water",
+	asserta(multiplier(2)).

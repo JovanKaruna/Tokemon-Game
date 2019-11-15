@@ -167,7 +167,7 @@ attack :-
 	(Specialenemy >= 1 -> specialattack_enemy;
 	enemyattack),!.
 
-% player attack dan lawan attack 
+% player attack dan lawan attack
 attack :-
 	battle(2),
 	multiplier(0),
@@ -182,7 +182,7 @@ attack :-
 	writeBattle,
 	enemyattack,!.
 
-% player attack 3 / 2 dan lawan attack 0.5 
+% player attack 3 / 2 dan lawan attack 0.5
 attack :-
 	battle(2),
 	multiplier(1),
@@ -226,7 +226,7 @@ enemyattack :-
     retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
 	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs, 
+	NewHealth is Health - DamagetoUs,
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 
@@ -241,7 +241,7 @@ enemyattack :-
     retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
 	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs, 
+	NewHealth is Health - DamagetoUs,
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 
@@ -256,7 +256,7 @@ enemyattack :-
     retract(inbattle(X,Health,MaxHealth,Level)),
 	write(Y),write(' attacks!'),nl,
 	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
-	NewHealth is Health - DamagetoUs, 
+	NewHealth is Health - DamagetoUs,
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
 
@@ -266,7 +266,8 @@ faints :-
 
 faints :-
     battle(2),
-    \+inbattle(X,0,_,_),
+    inbattle(X,Health,_,_),
+    Health > 0,
     write('Your '),write(X),write(' is still strong to fight!'),nl,!.
 
 faints :-
@@ -301,8 +302,8 @@ specialattack :-
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
-	writeBattle,!. 
+	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
+	writeBattle,!.
 
 % player attack special attack * 1.5
 specialattack :-
@@ -319,7 +320,7 @@ specialattack :-
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
+	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
 	writeBattle,!.
 
 
@@ -339,7 +340,7 @@ specialattack :-
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
+	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
 	writeBattle,!.
 
 
@@ -414,7 +415,7 @@ capture :-
 	Banyak >= Max,
 	write('You cannot capture another Tokemon! You have to drop one first.'),nl,!.
 
-capture:-
+capture :-
 	battle(3),
 	enemy(Y,Health,MaxHealth,Level),
 	addTokemon(Y,MaxHealth,MaxHealth,Level),
@@ -455,8 +456,9 @@ drop(X) :-
 effective :-
 	inbattle(X,_,_,_),
 	enemy(Y,_,_,_),
-	tipe(X,Tipe_X),tipe(Y,Tipe_Y), 
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'fire', Tipe_Y = 'leaves',
+    retract(multiplier(_)),
 	asserta(multiplier(1)),!.
 
 effective :-
@@ -464,6 +466,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'leaves', Tipe_Y = 'water',
+    retract(multiplier(_)),
 	asserta(multiplier(1)),!.
 
 effective :-
@@ -471,6 +474,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'water', Tipe_Y = 'fire',
+    retract(multiplier(_)),
 	asserta(multiplier(1)),!.
 
 effective :-
@@ -478,6 +482,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'lightning', Tipe_Y = 'water',
+    retract(multiplier(_)),
 	asserta(multiplier(1)),!.
 
 effective :-
@@ -485,14 +490,16 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'lightning', Tipe_Y = 'water',
+    retract(multiplier(_)),
 	asserta(multiplier(2)),!.
 
 % kebalikan
 effective :-
 	inbattle(X,_,_,_),
 	enemy(Y,_,_,_),
-	tipe(X,Tipe_X),tipe(Y,Tipe_Y), 
+	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'leaves', Tipe_Y = 'fire',
+    retract(multiplier(_)),
 	asserta(multiplier(2)),!.
 
 effective :-
@@ -500,6 +507,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'water', Tipe_Y = 'leaves',
+    retract(multiplier(_)),
 	asserta(multiplier(2)),!.
 
 effective :-
@@ -507,6 +515,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'fire', Tipe_Y = 'water',
+    retract(multiplier(_)),
 	asserta(multiplier(2)),!.
 
 effective :-
@@ -514,6 +523,7 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'water', Tipe_Y = 'lightning',
+    retract(multiplier(_)),
 	asserta(multiplier(2)),!.
 
 effective :-
@@ -521,7 +531,9 @@ effective :-
 	enemy(Y,_,_,_),
 	tipe(X,Tipe_X),tipe(Y,Tipe_Y),
 	Tipe_X = 'water', Tipe_Y = 'lightning',
+    retract(multiplier(_)),
 	asserta(multiplier(1)),!.
 
 effective :-
+    retract(multiplier(_)),
 	asserta(multiplier(0)),!.

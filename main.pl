@@ -72,7 +72,8 @@ start :-
     write('   1. alphamon  : fire'),nl,
     write('   2. kitmon    : water'),nl,
     write('   3. froyomon  : grass'),nl,
-    write('Ketik nomor tokemon seperti "tokemon1." jika memilih alphamon.'),nl,!.
+    write('Ketik nomor tokemon seperti "tokemon1." jika memilih alphamon.'),nl,
+	asserta(multiplier(0)),!.
 
 
 help :-
@@ -95,7 +96,7 @@ help :-
 help :-
 	battle(2),
 	write('Ketik "attack." untuk menyerang musuh, "specialattack." untuk menggunakan serangan special.'),nl,!.
-	
+
 help  :-
 	battle(0),
 	write('Ketik "pick(X).", X diganti dengan AvailableTokemon yang ada diatas.'),nl,
@@ -226,7 +227,7 @@ d  :-
 	player(X,_),
 	lebar(L),
 	X =:= L,
-	write('Di sebelah timur, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, 
+	write('Di sebelah timur, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
 	(battle(3) -> retract(battle(3)),!;!).
 
 d :-
@@ -261,7 +262,7 @@ a  :-
 a :-
 	player(X,_),
 	X =:= 1,
-	write('Di sebelah barat, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl, 
+	write('Di sebelah barat, kamu melihat sebuah pagar yang tinggi, kamu tidak dapat melompatinya.'),nl,
 	(battle(3) -> retract(battle(3)),!;!).
 a :-
 	retract(player(X,Y)),
@@ -350,7 +351,7 @@ heal :-
 	write('Command "heal" hanya bisa dilakukan saat berada di Gym Center.'), nl,!.
 
 heal :-
-	player(X,Y), isGym(X,Y), \+heal(_), 
+	player(X,Y), isGym(X,Y), \+heal(_),
 	write('Penggunaan heal hanya bisa dilakukan sekali saja dalam satu game.'),nl,!.
 
 heal :-

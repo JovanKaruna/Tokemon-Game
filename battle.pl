@@ -58,6 +58,16 @@ writeBattle:-
 attack :-
 	\+battle(2),
 	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
+% musuh mati
+
+attack :-
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,DamageToEnemy),
+	enemy(_,EnemyHealth,_,_),
+	DamageToEnemy >= EnemyHealth,
+	retract(inbattle(X,Health,MaxHealth,Level)),
+	addTokemon(X,Health,MaxHealth,Level),check,!.
 
 % player attack dan lawan mati
 attack :-
@@ -271,7 +281,7 @@ faints :-
     retract(inbattle(X,_,_,_)),
     write('Your '),write(X),write(' fainted, choose another tokemon!'),
     retract(battle(2)),
-    asserta(battle(0)),nl,!.
+    asserta(battle(0)),check,nl,!.
 
 
 specialattack :-

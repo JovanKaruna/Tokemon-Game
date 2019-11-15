@@ -1,5 +1,5 @@
 :- include('map.pl').
-
+:- include('check.pl').
 
 start :-
 	game(_),
@@ -95,7 +95,7 @@ map :-
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 
 map :-
-	\+battle(3),
+	(battle(1);battle(0);battle(2)),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon. '),nl,!.
 
 map :-
@@ -108,7 +108,7 @@ map :-
 			 showMap(X,Y)
 		)),
 		nl
-	)),nl, !.
+	)),nl,!.
 
 /*quit*/
 quit :-
@@ -128,6 +128,7 @@ quit :-
 	(enemy(_,_,_,_) -> retract(enemy(_,_,_,_));!),
 	(battle(_) -> retract(battle(_));!),
 	(special(_) -> retract(special(_));!),
+	(specialenemy(_) -> retract(specialenemy(_));!),
 	write('Game selesai.'),nl,!.
 
 /* Movement n,e,w,s*/
@@ -309,7 +310,7 @@ cure :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 cure:-
-	\+battle(3),
+	(battle(1);battle(0);battle(2)),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon.'),nl,!.
 
 cure :-

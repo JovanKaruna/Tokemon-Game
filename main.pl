@@ -95,7 +95,7 @@ map :-
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 
 map :-
-	battle(_),
+	\+battle(3),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon. '),nl,!.
 
 map :-
@@ -309,7 +309,7 @@ cure :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 cure:-
-	battle(_),
+	\+battle(3),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon.'),nl,!.
 
 cure :-
@@ -345,7 +345,8 @@ fight :-
 	retract(battle(1)),
 	asserta(battle(0)),
 	asserta(enemy(jellymon,10,10,1)),
-	asserta(special(1)),!.
+	asserta(special(1)),
+	asserta(specialenemy(1)),!.
 
 run :-
 	choose(_),

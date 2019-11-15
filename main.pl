@@ -344,7 +344,7 @@ fight :-
 	availableTokemon,
 	retract(battle(1)),
 	asserta(battle(0)),
-	asserta(enemy(jellymon,10,10,1)),
+	asserta(enemy(jellymon,40,40,1)),
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.
 

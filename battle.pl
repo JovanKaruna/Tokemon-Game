@@ -284,8 +284,10 @@ specialattack :-
 	\+special(1),
 	write('Special attacks can only be used once per battle!'),nl,!.
 
+% player attack special attack
 specialattack :-
 	battle(2),
+	multiplier(0),
 	special(1),
 	retract(special(1)),
 	inbattle(X,_,_,_),
@@ -297,7 +299,48 @@ specialattack :-
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy));
 	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
-	writeBattle,!.
+	writeBattle,
+	enemyattack,!. 
+
+% player attack special attack * 1.5
+specialattack :-
+	battle(2),
+	multiplier(1),
+	special(1),
+	retract(special(1)),
+	inbattle(X,_,_,_),
+	specialmove(X,Move,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 3 / 2,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	write(X), write(' uses '), write(Move),write('!'),nl,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy));
+	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
+	writeBattle,
+	enemyattack,!.
+
+
+% player attack special attack * 0.5
+
+specialattack :-
+	battle(2),
+	multiplier(2),
+	special(1),
+	retract(special(1)),
+	inbattle(X,_,_,_),
+	specialmove(X,Move,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy / 2,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	write(X), write(' uses '), write(Move),write('!'),nl,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy));
+	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
+	writeBattle,
+	enemyattack,!.
 
 
 specialattack_enemy :-

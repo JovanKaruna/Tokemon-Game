@@ -4,6 +4,10 @@ save(_) :-
     write('Ketik command "start." untuk menuju ke game.'), nl, !.
 
 save(_) :-
+	choose(_),
+	write('Pilih dulu tokemon yang akan menjadi partnermu, ketik "help." untuk mengetahui caranya.'),nl,!.
+
+save(_) :-
     battle(_),
     write('Command ini tidak bisa dipakai saat melakukan battle.'),nl,!.
     

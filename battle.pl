@@ -3,6 +3,7 @@
 :- dynamic(inbattle/4).
 :- dynamic(enemy/4).
 :- dynamic(special/1).
+:- dynamic(specialenemy/1).
 
 init_battle:-
     asserta(battle(1)).
@@ -71,6 +72,29 @@ attack :-
 	(special(1) -> retract(special(1)),!;!).
 
 attack :-
+	specialenemy(1),
+	battle(2),
+	inbattle(X,Health,MaxHealth,Level),
+	damage(X,DamageToEnemy),
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,Ene
+		myHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	random(1,8,Specialenemy),
+	(Specialenemy >= 1 -> specialattack_enemy,!;
+	damage(Y,DamagetoUs),
+    retract(inbattle(X,Health,MaxHealth,Level)),
+	write(Y),write(' attacks!'),nl,
+	write('It deals '),write(DamagetoUs),write(' damage to '), write(X),nl,nl,
+	NewHealth is Health - DamagetoUs, 
+	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
+    asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!),.
+
+attack :-
 	battle(2),
 	inbattle(X,Health,MaxHealth,Level),
 	damage(X,DamageToEnemy),
@@ -88,6 +112,7 @@ attack :-
 	NewHealth is Health - DamagetoUs, 
 	(NewHealth > 0 -> asserta(inbattle(X,NewHealth,MaxHealth,Level)),writeBattle;
     asserta(inbattle(X,0,MaxHealth,Level)),writeBattle,faints),!.
+
 
 faints :-
     \+battle(2),
@@ -131,6 +156,31 @@ specialattack :-
 	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy))),
 	writeBattle,!.
 
+
+specialattack_enemy :-
+	\+battle(2),
+	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
+
+
+specialattack_enemy :-
+	battle(2),
+	\+specialenemy(1),
+	write('Special attacks can only be used once per battle!'),nl,!.
+
+specialattack_enemy :-
+	battle(2),
+	specialenemy(1),
+	retract(specialenemy(1)),
+	enemy(X,_,_,_),
+	specialmove(X,Move,DamageToUs),
+	inbattle(Y,Health,MaxHealth,Level),
+	retract(inbattle(Y,Health,_,Level)),
+	write(X), write(' uses '), write(Move),write('!'),nl,
+	write('It dealt '),write(DamageToUs),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is Health - DamageToUs,
+	(DamageToUs < Health -> asserta(inbattle(Y,CurrentHealth,MaxHealth,Level));
+	DamageToUs >= Health -> asserta(inbattle(Y,0,MaxHealth,Level))),
+	writeBattle,!.
 
 capture :-
 	\+battle(3),

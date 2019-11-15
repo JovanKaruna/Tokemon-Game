@@ -93,6 +93,6 @@
   specialmove(alphamon,overheat,50).
   specialmove(froyomon,leafblade,50).
   specialmove(kitmon,hydropump,50).
-  specialmove(jellymon,megadrain,60).
+  specialmove(jellymon,megadrain,30).
   
   

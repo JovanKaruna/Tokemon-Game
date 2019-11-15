@@ -8,7 +8,7 @@ check :-
     write('Pilih Tokemon terlebih dahulu ketik "help.".'), nl,!.
 
 check :-
-    \+inventory(_,_,_,_),nl,
+    \+inventory(_,_,_,_),nl,nl,
     write('    Oh nooo... You don`t have any Tokemon left, all the wild Tokemon is attacking'),nl,
     write('you. You got surrounded and then you died. You failed to save the world, Now  the'),nl,
     write('world is full of Tokemon and the humans hide in fears.'),nl,nl,

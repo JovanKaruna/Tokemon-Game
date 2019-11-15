@@ -1,5 +1,37 @@
 :- include('map.pl').
 :- include('check.pl').
+:- include('saveload.pl').
+:- initialization(nl).
+:- initialization(write('                                      ,\'\\')).
+:- initialization(nl).
+:- initialization(write('                       ____         ,\'  _\\   ___    ___     ____')).
+:- initialization(nl).
+:- initialization(write('________________      |    |  /`.   \\,-\'    |   \\  /   |   |    \\  |`.')).
+:- initialization(nl).
+:- initialization(write('\\               \\     \'-.  | /   `.  ___    |    \\/    |   \'-.   \\ |  |')).
+:- initialization(nl).
+:- initialization(write(' \\____.    ._____\\      |  |/    ,\',\'_  `.  |          | __  |    \\|  |')).
+:- initialization(nl).
+:- initialization(write('       \\    \\     ,\' _`.|      ,\' / / / /   |          ,\' _`.|     |  |')).
+:- initialization(nl).
+:- initialization(write('        \\    \\   /  / \\ \\    ,\'   | \\/ / ,`.|         /  / \\ \\  |     |')).
+:- initialization(nl).
+:- initialization(write('         \\    \\ |   \\_/  |   `-.  \\    `\'  /|  |    ||   \\_/  | |\\    |')).
+:- initialization(nl).
+:- initialization(write('          \\    \\ \\      /       `-.`.___,-\' |  |\\  /| \\      /  | |   |')).
+:- initialization(nl).
+:- initialization(write('           \\    \\ `.__,\'|  |`-._    `|      |__| \\/ |  `.__,\'|  | |   |')).
+:- initialization(nl).
+:- initialization(write('            \\_.-\'       |__|    `-._ |              \'-.|     \'-.| |   |')).
+:- initialization(nl).
+:- initialization(write('                                    `\'                            \'-._|')).
+:- initialization(nl).
+:- initialization(nl).
+:- initialization(write('To Start the game use command "start."')).
+:- initialization(nl).
+:- initialization(write('To load use command "loadFile(Filename)."')).
+:- initialization(nl).
+
 
 start :-
 	game(_),
@@ -80,10 +112,10 @@ help :-
     write('    quit. -- quit the game'),nl,
     write('    w. a. s. d. -- move'),nl,
     write('    map. -- look at the map'),nl,
-    write('    heal -- cure Tokemon in inventory if in gym center'),nl,
+    write('    heal. -- heal Tokemon in inventory if in gym center'),nl,
     write('    status. -- show your status'),nl,
     write('    save(Filename). -- save your game'),nl,
-    write('    load(Filename). -- load previously saved game'),nl,!.
+    write('    loadFile(Filename). -- load previously saved game'),nl,!.
 
 /*Map*/
 map :-
@@ -300,32 +332,32 @@ status :-
 	findall(Tokemon,legendary(Tokemon,_),Llegendary),nl,
 	write('Your Enemy:'),printLegendary(Llegendary),!.
 
-/* cure */
+/* heal */
 
-cure :-
+heal :-
 	choose(_),
 	write('Pilih dulu tokemon yang akan menjadi partnermu, ketik "help." untuk mengetahui caranya.'),nl,!.
 
-cure :-
+heal :-
 	\+game(_),
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
-cure:-
+heal :-
 	(battle(1);battle(0);battle(2)),
 	write('Command ini tidak dapat dilakukan ketika bertemu Tokemon.'),nl,!.
 
-cure :-
+heal :-
 	player(X,Y), \+isGym(X,Y),
-	write('Command "cure" hanya bisa dilakukan saat berada di Gym Center.'), nl,!.
+	write('Command "heal" hanya bisa dilakukan saat berada di Gym Center.'), nl,!.
 
-cure :-
-	player(X,Y), isGym(X,Y), \+heal(1), 
-	write('Penggunaan cure hanya bisa dilakukan sekali saja dalam satu game.'),nl,!.
+heal :-
+	player(X,Y), isGym(X,Y), \+heal(_), 
+	write('Penggunaan heal hanya bisa dilakukan sekali saja dalam satu game.'),nl,!.
 
-cure :-
+heal :-
 	player(X,Y), isGym(X,Y), heal(1), findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
 	inverse(LTokemon,ListInv),write('Tokemon di inventory telah di heal sampai penuh.'),
 	healing(ListInv),nl,
-	retract(heal(1)),asserta(heal(0)),!.
+	retract(heal(1)),!.
 
 /* fight or run */
 fight :-

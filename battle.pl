@@ -58,16 +58,6 @@ writeBattle:-
 attack :-
 	\+battle(2),
 	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
-% musuh mati
-
-attack :-
-	battle(2),
-	inbattle(X,_,_,_),
-	damage(X,DamageToEnemy),
-	enemy(_,EnemyHealth,_,_),
-	DamageToEnemy >= EnemyHealth,
-	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check,!.
 
 % player attack dan lawan mati
 attack :-
@@ -79,10 +69,11 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	addTokemon(X,Health,MaxHealth,Level),check,
 	retract(battle(2)),
 	asserta(battle(3)),
-	(special(1) -> retract(special(1)),!;!).
+	(special(1) -> retract(special(1)),!;!),
+	(specialenemy(1) -> retract(specialenemy(1)),!;!).
 
 % player attack 3 / 2 dan lawan mati
 attack :-
@@ -96,10 +87,11 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	addTokemon(X,Health,MaxHealth,Level),check,
 	retract(battle(2)),
 	asserta(battle(3)),
-	(special(1) -> retract(special(1)),!;!).
+	(special(1) -> retract(special(1)),!;!),
+	(specialenemy(1) -> retract(specialenemy(1)),!;!).
 
 % player attack 0.5 dan lawan mati
 attack :-
@@ -113,10 +105,11 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	addTokemon(X,Health,MaxHealth,Level),check,
 	retract(battle(2)),
 	asserta(battle(3)),
-	(special(1) -> retract(special(1)),!;!).
+	(special(1) -> retract(special(1)),!;!),
+	(specialenemy(1) -> retract(specialenemy(1)),!;!).
 
 % player attack dan lawan special atack
 attack :-

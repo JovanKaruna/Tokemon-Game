@@ -54,7 +54,7 @@
   health(piemon,90).
   
   /* Tipe Tokemon */
-  tipe(alphamon,fire).
+  tipe(alphamon,water).
   tipe(betamon,leaves).
   tipe(cupmon,water).
   tipe(donutmon,lightning).

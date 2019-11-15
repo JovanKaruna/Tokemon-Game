@@ -345,7 +345,6 @@ fight :-
 	retract(battle(1)),
 	asserta(battle(0)),
 	asserta(enemy(jellymon,10,10,1)),
-	effective,
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.
 

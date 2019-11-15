@@ -40,6 +40,7 @@ mapKanan(X,_) :-
     X=:=XMax,
     !.
 
+/* Referensi https://github.com/AdityaPutraS/Tubes-Logif/blob/master/peta.pl */
 showMap(X,Y) :-
     mapKanan(X,Y), !, write('X').
 showMap(X,Y) :-

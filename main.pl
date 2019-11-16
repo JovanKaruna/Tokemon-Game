@@ -33,6 +33,7 @@
 :- initialization(nl).
 
 
+
 start :-
 	game(_),
 	write('Kamu tidak bisa melakukan "start." ketika game sudah dimulai.'), nl, !.
@@ -73,6 +74,19 @@ start :-
     write('   2. kitmon    : water'),nl,
     write('   3. froyomon  : grass'),nl,
     write('Ketik nomor tokemon seperti "tokemon1." jika memilih alphamon.'),nl,
+	asserta(wild(alphamon)),
+    asserta(wild(cupmon)),
+    asserta(wild(donutmon)),
+    asserta(wild(eclairmon)),
+    asserta(wild(froyomon)),
+    asserta(wild(gingermon)),
+    asserta(wild(honeymon)),
+    asserta(wild(jellymon)),
+    asserta(wild(kitmon)),
+    asserta(wild(lollimon)),
+    asserta(wild(marshmon)),
+    asserta(wild(nougatmon)),
+    asserta(wild(piemon)),
 	asserta(multiplier(0)),!.
 
 
@@ -378,7 +392,10 @@ fight :-
 	availableTokemon,
 	retract(battle(1)),
 	asserta(battle(0)),
-	asserta(enemy(jellymon,10,10,1)),
+	aggregate_all(count, wild(_), Count),
+	I is random(Count)+1, nth_clause(wild(_),I,R), clause(H,_,R),
+	H = wild(Enemy), health(Enemy, Health),
+	asserta(enemy(Enemy,Health,Health,1)),
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.
 

@@ -420,6 +420,7 @@ capture :-
 	enemy(Y,Health,MaxHealth,Level),
 	addTokemon(Y,MaxHealth,MaxHealth,Level),
 	retract(enemy(Y,Health,MaxHealth,Level)),
+    retract(wild(Y)),
 	write(Y),
 	write(' is captured!'),nl,
 	retract(battle(_)),!.

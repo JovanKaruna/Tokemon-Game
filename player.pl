@@ -19,7 +19,7 @@ init_player:-
     asserta(legendary(icemon,MaxHealth1)),
     health(icemon,MaxHealth2),
     asserta(legendary(betamon,MaxHealth2)).
-    
+
 
 
 tokemon1 :-
@@ -62,7 +62,8 @@ addTokemon(_,_,_,_) :-
 	Banyak >= Max,!,fail.
 
 addTokemon(Tokemon,Health,MaxHealth,Level) :-
-	assertz(inventory(Tokemon,Health,MaxHealth,Level)),!.
+	assertz(inventory(Tokemon,Health,MaxHealth,Level)),
+    retract(wild(Tokemon)),!.
 
 delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.
@@ -73,7 +74,7 @@ delTokemon(Tokemon) :-
 
 printStatus([]):-!.
 printStatus([H|T]):-
-	nl,write(H),nl,inventory(H,Health,_,Level), write('Level: '), 
+	nl,write(H),nl,inventory(H,Health,_,Level), write('Level: '),
 	write(Level),nl,write('Health: '),write(Health),nl,
     write('Type: '),tipe(H,Type), write(Type),nl,printStatus(T),!.
 
@@ -101,4 +102,3 @@ retractlegendary([H|T]):-
         rev([], B, B, []).
         rev([AH|AT], NewA, B, [_|BT]) :- rev(AT, [AH|NewA], B, BT).
         inverse(A, B) :- rev(A, [], B, B).
-

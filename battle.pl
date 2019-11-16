@@ -62,6 +62,7 @@ attack :-
 % player attack dan lawan mati
 attack :-
 	battle(2),
+    multiplier(0),
 	inbattle(X,_,_,_),
 	damage(X,DamageToEnemy),
 	enemy(Y,EnemyHealth,_,_),
@@ -186,7 +187,6 @@ attack :-
 attack :-
 	battle(2),
 	multiplier(1),
-	battle(2),
 	inbattle(X,_,_,_),
 	damage(X,RealDamageToEnemy),
 	DamageToEnemy is RealDamageToEnemy * 3 / 2,
@@ -203,7 +203,6 @@ attack :-
 attack :-
 	battle(2),
 	multiplier(2),
-	battle(2),
 	inbattle(X,_,_,_),
 	damage(X,RealDamageToEnemy),
 	DamageToEnemy is RealDamageToEnemy /  2,
@@ -358,7 +357,6 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(0),
-	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,DamageToUs),
@@ -374,7 +372,6 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(1),
-	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,RealDamageToUs),
@@ -391,7 +388,6 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(2),
-	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,RealDamageToUs),
@@ -420,7 +416,6 @@ capture :-
 	enemy(Y,Health,MaxHealth,Level),
 	addTokemon(Y,MaxHealth,MaxHealth,Level),
 	retract(enemy(Y,Health,MaxHealth,Level)),
-    retract(wild(Y)),
 	write(Y),
 	write(' is captured!'),nl,
 	retract(battle(_)),!.

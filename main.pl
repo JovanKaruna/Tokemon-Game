@@ -394,8 +394,8 @@ fight :-
 	asserta(battle(0)),
 	aggregate_all(count, wild(_), Count),
 	I is random(Count)+1, nth_clause(wild(_),I,R), clause(H,_,R),
-	H = wild(Enemy), health(Enemy, Health),
-	asserta(enemy(Enemy,Health,Health,1)),
+	H = wild(Tokemon), health(Tokemon, Health),
+	asserta(enemy(Tokemon,Health,Health,1)),
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.
 

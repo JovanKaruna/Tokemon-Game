@@ -1,5 +1,5 @@
 fusion(froyomon, jellymon, nougatmon, betamon).
-fusion(donutmon, eclairmon, honeymon, alphamon).
+fusion(donutmon, eclairmon, froyomon, alphamon).
 
 availableFusion :-
 	write('Available Fusions: '),
@@ -13,4 +13,4 @@ printAvailableFusion([H|T]):-
     write(A), write(' + '),
     write(B), write(' + '),
     write(C), write(' ==> '),
-    write(H), write(']'), printAvailable(T),!.
+    write(H), write(']'), printAvailableFusion(T),!.

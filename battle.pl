@@ -69,7 +69,7 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check,
+	addTokemon(X,Health,MaxHealth,Level),check_win,
 	retract(battle(2)),
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!),
@@ -87,7 +87,7 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check,
+	addTokemon(X,Health,MaxHealth,Level),check_win,
 	retract(battle(2)),
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!),
@@ -105,7 +105,7 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check,
+	addTokemon(X,Health,MaxHealth,Level),check_win,
 	retract(battle(2)),
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!),
@@ -277,7 +277,7 @@ faints :-
     retract(inbattle(X,_,_,_)),
     write('Your '),write(X),write(' fainted, choose another tokemon!'),
     retract(battle(2)),
-    asserta(battle(0)),check,nl,!.
+    asserta(battle(0)),check_lose,nl,!.
 
 
 specialattack :-

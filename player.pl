@@ -29,6 +29,7 @@ tokemon1 :-
 tokemon1 :-
     choose(_),
     addTokemon(alphamon,50,50,1),
+    retract(wild(alphamon)),
     write('Congratulations partnermu adalah alphamon.'),nl,
     retract(choose(1)),!.
 
@@ -39,6 +40,7 @@ tokemon2 :-
 tokemon2 :-
     choose(_),
     addTokemon(kitmon,100,100,1),
+    retract(wild(kitmon)),
     write('Congratulations partnermu adalah kitmon.'),nl,
     retract(choose(1)),!.
 
@@ -49,6 +51,7 @@ tokemon3 :-
 tokemon3 :-
     choose(_),
     addTokemon(froyomon,75,75,1),
+    retract(wild(froyomon)),
     write('Congratulations partnermu adalah froyomon.'),nl,
     retract(choose(1)),!.
 
@@ -62,8 +65,7 @@ addTokemon(_,_,_,_) :-
 	Banyak >= Max,!,fail.
 
 addTokemon(Tokemon,Health,MaxHealth,Level) :-
-	assertz(inventory(Tokemon,Health,MaxHealth,Level)),
-    retract(wild(Tokemon)),!.
+	assertz(inventory(Tokemon,Health,MaxHealth,Level)),!.
 
 delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.

@@ -52,7 +52,7 @@
   health(nougatmon,110).
   health(oreomon,1000).
   health(piemon,90).
-  
+
   /* Tipe Tokemon */
   tipe(alphamon,water).
   tipe(betamon,leaves).
@@ -70,7 +70,7 @@
   tipe(nougatmon,leaves).
   tipe(oreomon,fire).
   tipe(piemon,lightning).
-  
+
   /* Normal Attack Tokemon */
   damage(alphamon,2).
   damage(betamon,40).
@@ -90,9 +90,7 @@
   damage(piemon,8).
 
 
-  specialmove(alphamon,overheat,50).
+  specialmove(alphamon,overheat,900).
   specialmove(froyomon,leafblade,50).
   specialmove(kitmon,hydropump,50).
   specialmove(jellymon,megadrain,30).
-  
-  

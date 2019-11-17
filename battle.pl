@@ -37,23 +37,23 @@ pick(X):-
 	writeBattle,!.
 
 writeBattle:-
-	\+game(_),
-	write('Command ini hanya bisa dipakai setelah command "start.".'),nl,!.
+    battle(2),
+    inbattle(X,Health,_,Level),
+    enemy(Y,EnemyHealth,_,LevelEnemy),
+    write('Wild Tokemon :'),nl,write(Y),nl,write('Level : '), write(LevelEnemy),nl,
+    write('Health : '),write(EnemyHealth),nl,
+    write('Type : '),tipe(Y,TypeEnemy), write(TypeEnemy),nl,nl,
+    write('Your Tokemon :'), nl, write(X),nl,write('Level : '), write(Level),nl,
+    write('Health : '), write(Health),nl,
+    write('Type : '),tipe(X,Type), write(Type),nl,nl,!.
 
 writeBattle:-
 	\+battle(2),
 	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
 
 writeBattle:-
-	battle(2),
-	inbattle(X,Health,_,Level),
-	enemy(Y,EnemyHealth,_,LevelEnemy),
-	write('Wild Tokemon :'),nl,write(Y),nl,write('Level : '), write(LevelEnemy),nl,
-	write('Health : '),write(EnemyHealth),nl,
-	write('Type : '),tipe(Y,TypeEnemy), write(TypeEnemy),nl,nl,
-	write('Your Tokemon :'), nl, write(X),nl,write('Level : '), write(Level),nl,
-	write('Health : '), write(Health),nl,
-	write('Type : '),tipe(X,Type), write(Type),nl,nl,!.
+    \+game(_),
+    write('Command ini hanya bisa dipakai setelah command "start.".'),nl,!.
 
 attack :-
 	\+battle(2),
@@ -62,6 +62,7 @@ attack :-
 % player attack dan lawan mati
 attack :-
 	battle(2),
+    multiplier(0),
 	inbattle(X,_,_,_),
 	damage(X,DamageToEnemy),
 	enemy(Y,EnemyHealth,_,_),
@@ -99,7 +100,7 @@ attack :-
 	multiplier(2),
 	inbattle(X,_,_,_),
 	damage(X,RealDamageToEnemy),
-	DamageToEnemy is RealDamageToEnemy /  2,
+	DamageToEnemy is RealDamageToEnemy / 2,
 	enemy(Y,EnemyHealth,_,_),
 	DamageToEnemy >= EnemyHealth,
 	write(Y),write(' faints! Do you want to capture '),write(Y),
@@ -155,7 +156,7 @@ attack :-
 	battle(2),
 	inbattle(X,_,_,_),
 	damage(X,RealDamageToEnemy),
-	DamageToEnemy is RealDamageToEnemy /  2,
+	DamageToEnemy is RealDamageToEnemy / 2,
 	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
 	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
 	DamageToEnemy<EnemyHealth,
@@ -301,9 +302,10 @@ specialattack :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+    CurrentHealth is EnemyHealth - DamageToEnemy,
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writebattle,enemyattack);
+	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
+	!.
 
 % player attack special attack * 1.5
 specialattack :-
@@ -319,9 +321,9 @@ specialattack :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writebattle,enemyattack);
+	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
+	!.
 
 
 % player attack special attack * 0.5
@@ -338,10 +340,10 @@ specialattack :-
 	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
-	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
-	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+    CurrentHealth is EnemyHealth - DamageToEnemy,
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writebattle,enemyattack);
+	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
+	!.
 
 
 specialattack_enemy :-
@@ -417,9 +419,9 @@ capture :-
 
 capture :-
 	battle(3),
-	enemy(Y,Health,MaxHealth,Level),
+	enemy(Y,_,MaxHealth,Level),
 	addTokemon(Y,MaxHealth,MaxHealth,Level),
-	retract(enemy(Y,Health,MaxHealth,Level)),
+    retract(wild(Y)),
 	write(Y),
 	write(' is captured!'),nl,
 	retract(battle(_)),!.

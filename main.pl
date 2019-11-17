@@ -87,7 +87,8 @@ start :-
     asserta(wild(marshmon)),
     asserta(wild(nougatmon)),
     asserta(wild(piemon)),
-	asserta(multiplier(0)),!.
+	asserta(multiplier(0)),
+	asserta(enemy(fictional,0,0,0)),!.
 
 
 help :-
@@ -395,6 +396,7 @@ fight :-
 	aggregate_all(count, wild(_), Count),
 	I is random(Count)+1, nth_clause(wild(_),I,R), clause(H,_,R),
 	H = wild(Tokemon), health(Tokemon, Health),
+	(enemy(Et,Eh,Em,El) -> retract(enemy(Et,Eh,Em,El)),!;!),
 	asserta(enemy(Tokemon,Health,Health,1)),
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.

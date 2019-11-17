@@ -62,7 +62,6 @@ attack :-
 % player attack dan lawan mati
 attack :-
 	battle(2),
-    multiplier(0),
 	inbattle(X,_,_,_),
 	damage(X,DamageToEnemy),
 	enemy(Y,EnemyHealth,_,_),
@@ -111,6 +110,55 @@ attack :-
 	asserta(battle(3)),
 	(special(1) -> retract(special(1)),!;!),
 	(specialenemy(1) -> retract(specialenemy(1)),!;!).
+
+% player attack dan lawan attack
+attack :-
+	battle(2),
+	multiplier(0),
+	inbattle(X,_,_,_),
+	damage(X,DamageToEnemy),
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
+
+% player attack 3 / 2 dan lawan attack 0.5
+attack :-
+	battle(2),
+	multiplier(1),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy * 3 / 2,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
+
+%  player attack 0.5 dan lawan attack 3 / 2
+attack :-
+	battle(2),
+	multiplier(2),
+	battle(2),
+	inbattle(X,_,_,_),
+	damage(X,RealDamageToEnemy),
+	DamageToEnemy is RealDamageToEnemy /  2,
+	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
+	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
+	DamageToEnemy<EnemyHealth,
+	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
+	CurrentHealth is EnemyHealth - DamageToEnemy,
+	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
+	writeBattle,
+	enemyattack,!.
 
 % player attack dan lawan special atack
 attack :-
@@ -168,52 +216,7 @@ attack :-
 	(Specialenemy >= 1 -> specialattack_enemy;
 	enemyattack),!.
 
-% player attack dan lawan attack
-attack :-
-	battle(2),
-	multiplier(0),
-	inbattle(X,_,_,_),
-	damage(X,DamageToEnemy),
-	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
-	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
-	DamageToEnemy<EnemyHealth,
-	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
-	CurrentHealth is EnemyHealth - DamageToEnemy,
-	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
-	writeBattle,
-	enemyattack,!.
 
-% player attack 3 / 2 dan lawan attack 0.5
-attack :-
-	battle(2),
-	multiplier(1),
-	inbattle(X,_,_,_),
-	damage(X,RealDamageToEnemy),
-	DamageToEnemy is RealDamageToEnemy * 3 / 2,
-	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
-	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
-	DamageToEnemy<EnemyHealth,
-	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
-	CurrentHealth is EnemyHealth - DamageToEnemy,
-	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
-	writeBattle,
-	enemyattack,!.
-
-%  player attack 0.5 dan lawan attack 3 / 2
-attack :-
-	battle(2),
-	multiplier(2),
-	inbattle(X,_,_,_),
-	damage(X,RealDamageToEnemy),
-	DamageToEnemy is RealDamageToEnemy /  2,
-	enemy(Y,EnemyHealth,MaxHealthEnemy,LevelEnemy),
-	retract(enemy(Y,EnemyHealth,_,LevelEnemy)),
-	DamageToEnemy<EnemyHealth,
-	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
-	CurrentHealth is EnemyHealth - DamageToEnemy,
-	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
-	writeBattle,
-	enemyattack,!.
 
 % enemy attack biasa
 enemyattack :-
@@ -300,9 +303,9 @@ specialattack :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
+	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack;
 	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+	!.
 
 % player attack special attack * 1.5
 specialattack :-
@@ -318,9 +321,9 @@ specialattack :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
+	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack;
 	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+	!.
 
 
 % player attack special attack * 0.5
@@ -338,9 +341,9 @@ specialattack :-
 	write(X), write(' uses '), write(Move),write('!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),enemyattack;
+	(DamageToEnemy < EnemyHealth -> asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack;
 	DamageToEnemy >= EnemyHealth -> asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack),
-	writeBattle,!.
+	!.
 
 
 specialattack_enemy :-
@@ -357,6 +360,7 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(0),
+	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,DamageToUs),
@@ -372,6 +376,7 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(1),
+	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,RealDamageToUs),
@@ -388,6 +393,7 @@ specialattack_enemy :-
 specialattack_enemy :-
 	battle(2),
 	multiplier(2),
+	specialenemy(1),
 	retract(specialenemy(1)),
 	enemy(X,_,_,_),
 	specialmove(X,Move,RealDamageToUs),

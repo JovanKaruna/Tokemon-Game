@@ -94,3 +94,15 @@
   specialmove(froyomon,leafblade,50).
   specialmove(kitmon,hydropump,50).
   specialmove(jellymon,megadrain,30).
+  specialmove(betamon,worldtree,40).
+  specialmove(cupmon,waterfall,30).
+  specialmove(donutmon,stungun,25).
+  specialmove(eclairmon,fireball,30).
+  specialmove(gingermon,holywater,24).
+  specialmove(honeymon,electron,14).
+  specialmove(icemon,supernova,60).
+  specialmove(lollimon,lightningarrow,20).
+  specialmove(marshmon,waterlaser,35).
+  specialmove(nougatmon,spikewall,15).
+  specialmove(oreomon,cataclysm,100).
+  specialmove(piemon,thunderstorm,20).

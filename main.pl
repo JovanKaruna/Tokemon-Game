@@ -406,6 +406,7 @@ fight :-
 			legendary(_)
 		) ->
 		( % legendary enemy
+			write('You feel a strong aura... It is a legendary Tokemon !!'),nl,
 			aggregate_all(count, legendary(_), CountL),
 			IL is random(CountL)+1, nth_clause(legendary(_),IL,RL), clause(HL,_,RL),
 			HL = legendary(Legend), health(Legend, HealthL),

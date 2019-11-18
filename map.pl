@@ -24,38 +24,37 @@ isMeteorite(X,Y):-
     ;((Y =:= 14),(X =:= 5) -> !).
 
 mapAtas(_,Y) :-
-    Y=:=0
-    ,!.
+    Y =:= 0,
+    !.
 
 mapKiri(X,_) :-
-    X=:=0,
+    X =:=0,
     !.
 
 mapBawah(_,Y) :-
     tinggi(T),
-    YMax is T+1,
-    Y=:=YMax,
+    TinggiMax is T+1,
+    Y =:= TinggiMax,
     !.
 mapKanan(X,_) :-
     lebar(L),
-    XMax is L+1,
-    X=:=XMax,
+    LebarMax is L+1,
+    X =:= LebarMax,
     !.
 
-/* Referensi https://github.com/AdityaPutraS/Tubes-Logif/blob/master/peta.pl */
 showMap(X,Y) :-
-    mapKanan(X,Y), !, write('X').
+    mapKanan(X,Y), write('X'), !.
 showMap(X,Y) :-
-    mapKiri(X,Y), !, write('X').
+    mapKiri(X,Y), write('X'), !.
 showMap(X,Y) :-
-    mapAtas(X,Y), !, write('X').
+    mapAtas(X,Y), write('X'), !.
 showMap(X,Y) :-
-    mapBawah(X,Y), !, write('X').
+    mapBawah(X,Y), write('X'), !.
 showMap(X,Y) :-
-    player(X,Y), !, write('P').
+    player(X,Y), write('P'), !.
 showMap(X,Y) :-
-    isGym(X,Y),!, write('G').
+    isGym(X,Y), write('G'), !.
 showMap(X,Y) :-
-    isMeteorite(X,Y), !, write('M').
+    isMeteorite(X,Y), write('M'), !.
 showMap(_,_) :-
-	write('-').
+	write('-'), !.

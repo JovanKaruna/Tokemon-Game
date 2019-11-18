@@ -31,9 +31,9 @@
   % normal(marshmon).
   % normal(nougatmon).
   % normal(piemon).
-  % legendary(betamon).
-  % legendary(icemon).
-  % legendary(oreomon).
+  legend(betamon).
+  legend(icemon).
+  legend(oreomon).
 
   /* Health Tokemon */
   health(alphamon,50).

@@ -440,10 +440,22 @@ capture :-
 	write('You cannot capture another Tokemon! You have to drop one first.'),nl,!.
 
 capture :-
+	
 	battle(3),
 	enemy(Y,_,MaxHealth,Level),
+	wild(Y),
 	addTokemon(Y,MaxHealth,MaxHealth,Level),
     retract(wild(Y)),
+	write(Y),
+	write(' is captured!'),nl,
+	retract(battle(_)),!.
+
+capture :-
+	battle(3),
+	enemy(Y,_,MaxHealth,Level),
+	legendary(Y),
+	addTokemon(Y,MaxHealth,MaxHealth,Level),
+    retract(legendary(Y)),
 	write(Y),
 	write(' is captured!'),nl,
 	retract(battle(_)),!.

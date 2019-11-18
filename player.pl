@@ -128,9 +128,14 @@ delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.
 
 delTokemon(Tokemon) :-
-	inventory(Tokemon,_,_,_),
+	\+legend(Tokemon),
+    inventory(Tokemon,_,_,_),
     retract(inventory(Tokemon,_,_,_)),
     asserta(wild(Tokemon)),!.
+delTokemon(Tokemon) :-
+	legend(Tokemon),
+    inventory(Tokemon,_,_,_),
+    retract(inventory(Tokemon,_,_,_)),!.
 
 printStatus([]):-!.
 printStatus([H|T]):-

@@ -1,0 +1,11 @@
+inventory(froyomon,75,75,1).
+inventory(piemon,90,90,1).
+inventory(alphamon,184,1000,5).
+inventory(betamon,350,350,5).
+legendary(icemon).
+legendary(oreomon).
+lebar(15).
+tinggi(21).
+player(5,9).
+heal(1).
+exp(440).

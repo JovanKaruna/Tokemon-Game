@@ -1,5 +1,6 @@
-fusion(froyomon, jellymon, nougatmon, betamon).
-fusion(donutmon, eclairmon, froyomon, alphamon).
+fusion(cupmon,eclairmon,honeymon,marshmon).
+fusion(honeymon,nougatmon,piemon,kitmon).
+fusion(alphamon,cupmon,jellymon,lollimon).
 
 availableFusion :-
 	write('Available Fusions: '),

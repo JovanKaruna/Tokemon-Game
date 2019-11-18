@@ -38,17 +38,17 @@
   /* Health Tokemon */
   health(alphamon,50).
   health(betamon,350).
-  health(cupmon,70).
+  health(cupmon,20).
   health(donutmon,60).
-  health(eclairmon,90).
+  health(eclairmon,30).
   health(froyomon,75).
   health(gingermon,40).
-  health(honeymon,80).
+  health(honeymon,25).
   health(icemon,420).
   health(jellymon,10).
   health(kitmon,100).
   health(lollimon,95).
-  health(marshmon,25).
+  health(marshmon,45).
   health(nougatmon,110).
   health(oreomon,1000).
   health(piemon,90).
@@ -72,7 +72,7 @@
   tipe(piemon,lightning).
 
   /* Normal Attack Tokemon */
-  damage(alphamon,2).
+  damage(alphamon,10).
   damage(betamon,40).
   damage(cupmon,2).
   damage(donutmon,10).
@@ -82,7 +82,7 @@
   damage(honeymon,6).
   damage(icemon,60).
   damage(jellymon,10).
-  damage(kitmon,3).
+  damage(kitmon,12).
   damage(lollimon,10).
   damage(marshmon,25).
   damage(nougatmon,6).
@@ -90,7 +90,7 @@
   damage(piemon,8).
 
 
-  specialmove(alphamon,overheat,900).
+  specialmove(alphamon,overheat,80).
   specialmove(froyomon,leafblade,50).
   specialmove(kitmon,hydropump,50).
   specialmove(jellymon,megadrain,30).

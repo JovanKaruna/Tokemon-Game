@@ -170,9 +170,9 @@ quit :-
 	retract(tinggi(_)),
 	retract(exp(_)),
 	findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
-	findall(Legend,legendary(Legend,_),Llegend),
+	(legendary(_) -> (findall(Legend,legendary(Legend),Llegend),retractlegendary(Llegend));!),
 	retractinventory(LTokemon),
-	retractlegendary(Llegend),
+	(choose(_) -> retract(choose(_));!),
 	(inbattle(_,_,_,_) -> retract(inbattle(_,_,_,_));!),
 	(enemy(_,_,_,_) -> retract(enemy(_,_,_,_));!),
 	(battle(_) -> retract(battle(_));!),
@@ -346,10 +346,10 @@ status :-
 status :-
 	write('Your EXP: '),
 	exp(E),
-	write(E),nl,nl, 
+	write(E),nl,nl,
 	findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),write('Your Tokemon:'),
 	printStatus(LTokemon),nl,
-	findall(Tokemon,legendary(Tokemon,_),Llegendary),nl,
+	findall(Tokemon,legendary(Tokemon),Llegendary),nl,
 	write('Your Enemy:'),printLegendary(Llegendary),!.
 
 /* heal */
@@ -397,11 +397,30 @@ fight :-
 	availableTokemon,
 	retract(battle(1)),
 	asserta(battle(0)),
-	aggregate_all(count, wild(_), Count),
-	I is random(Count)+1, nth_clause(wild(_),I,R), clause(H,_,R),
-	H = wild(Tokemon), health(Tokemon, Health),
-	(enemy(Et,Eh,Em,El) -> retract(enemy(Et,Eh,Em,El)),!;!),
-	asserta(enemy(Tokemon,Health,Health,1)),
+	random(1,6,RandLegend),
+	( % start if-else
+		( % peluang legendary
+			RandLegend =:= 1,
+			legendary(_)
+		) ->
+		( % legendary enemy
+			aggregate_all(count, legendary(_), CountL),
+			IL is random(CountL)+1, nth_clause(legendary(_),IL,RL), clause(HL,_,RL),
+			HL = legendary(Legend), health(Legend, HealthL),
+			(enemy(Et,Eh,Em,El) -> retract(enemy(Et,Eh,Em,El)),!;!),
+			asserta(enemy(Legend,HealthL,HealthL,5))
+		);
+		( % normal enemy
+			aggregate_all(count, wild(_), Count),
+			I is random(Count)+1, nth_clause(wild(_),I,R), clause(H,_,R),
+			H = wild(Tokemon), health(Tokemon, RealHealth),
+			(enemy(Et,Eh,Em,El) -> retract(enemy(Et,Eh,Em,El)),!;!),
+			% random level
+			random(1,3,EnemyLevel),
+			Health is RealHealth + (EnemyLevel-1)*10,
+			asserta(enemy(Tokemon,Health,Health,EnemyLevel))
+		)
+	), % end if-else
 	asserta(special(1)),
 	asserta(specialenemy(1)),!.
 

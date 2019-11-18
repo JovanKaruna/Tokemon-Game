@@ -14,12 +14,9 @@ init_player:-
     random(1,T,Y),
     asserta(player(X,Y)),
     asserta(choose(1)),
-    health(oreomon,MaxHealth),
-    asserta(legendary(oreomon,MaxHealth)),
-    health(icemon,MaxHealth1),
-    asserta(legendary(icemon,MaxHealth1)),
-    health(icemon,MaxHealth2),
-    asserta(legendary(betamon,MaxHealth2)),
+    asserta(legendary(oreomon)),
+    asserta(legendary(icemon)),
+    asserta(legendary(betamon)),
     asserta(exp(0)).
 
 
@@ -88,14 +85,14 @@ upgrade(Tokemon) :-
     isMeteorite(X,Y),
     \+inventory(Tokemon,_,_,_),
     write('Kamu tidak memiliki Tokemon tersebut!'),nl,!.
-    
+
 upgrade(Tokemon) :-
     player(X,Y),
     isMeteorite(X,Y),
     inventory(Tokemon,_,_,Level),
     (Level =:= 5),
     write('Tokemon tersebut sudah pada level maksimum!'),nl,!.
-    
+
 
 upgrade(Tokemon) :-
     player(X,Y),
@@ -144,7 +141,7 @@ printStatus([H|T]):-
 printLegendary([]):-!.
 printLegendary([H|T]):-
     nl,write(H),nl,
-	write('Health: '),legendary(H,Health),write(Health),nl,
+	write('Health: '),legendary(H),health(H,Health),write(Health),nl,
     write('Type: '),tipe(H,Type), write(Type) ,nl,printLegendary(T),!.
 
 healing([]):-!.
@@ -158,7 +155,7 @@ retractinventory([H|T]):-
 
 retractlegendary([]):- !.
 retractlegendary([H|T]):-
-    retract(legendary(H,_)),retractlegendary(T),!.
+    retract(legendary(H)),retractlegendary(T),!.
 
 /* inverse(A,B) : A dan B merupakan sebuah list yang berisi beberapa angka nilai rules
         akan bernilai yes jika A merupakan kebalikan dari list B dan no jika tidak. */

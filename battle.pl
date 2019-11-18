@@ -71,12 +71,13 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check_win,
+	addTokemon(X,Health,MaxHealth,Level),
 	retract(battle(2)),
 	asserta(battle(3)),
 	addExp(MaxHealthEnemy),
 	(special(1) -> retract(special(1)),!;!),
-	(specialenemy(1) -> retract(specialenemy(1)),!;!).
+	(specialenemy(1) -> retract(specialenemy(1)),!;!),
+    check_win,!.
 
 % player attack 3 / 2 dan lawan mati
 attack :-
@@ -91,12 +92,13 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check_win,
+	addTokemon(X,Health,MaxHealth,Level),
 	retract(battle(2)),
 	asserta(battle(3)),
 	addExp(MaxHealthEnemy),
 	(special(1) -> retract(special(1)),!;!),
-	(specialenemy(1) -> retract(specialenemy(1)),!;!).
+	(specialenemy(1) -> retract(specialenemy(1)),!;!),
+    check_win,!.
 
 % player attack 0.5 dan lawan mati
 attack :-
@@ -111,12 +113,13 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),check_win,
+	addTokemon(X,Health,MaxHealth,Level),
 	retract(battle(2)),
 	asserta(battle(3)),
 	addExp(MaxHealthEnemy),
 	(special(1) -> retract(special(1)),!;!),
-	(specialenemy(1) -> retract(specialenemy(1)),!;!).
+	(specialenemy(1) -> retract(specialenemy(1)),!;!),
+    check_win,!.
 
 % player attack dan lawan special atack
 attack :-
@@ -134,7 +137,7 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 1 -> specialattack_enemy;
+	(Specialenemy >= 6 -> specialattack_enemy;
 	enemyattack),!.
 
 % player attack 3 / 2 dan lawan special attack 0.5
@@ -154,7 +157,7 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 1 -> specialattack_enemy;
+	(Specialenemy >= 6 -> specialattack_enemy;
 	enemyattack),!.
 
 % player attack 0.5 dan lawan special attack 3 / 2
@@ -174,7 +177,7 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 1 -> specialattack_enemy;
+	(Specialenemy >= 6 -> specialattack_enemy;
 	enemyattack),!.
 
 % player attack dan lawan attack

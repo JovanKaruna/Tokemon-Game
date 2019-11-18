@@ -18,22 +18,22 @@
   tokemon(piemon).
 
   /* Jenis Tokemon */
-  normal(alphamon).
-  normal(cupmon).
-  normal(donutmon).
-  normal(eclairmon).
-  normal(froyomon).
-  normal(gingermon).
-  normal(honeymon).
-  normal(jellymon).
-  normal(kitmon).
-  normal(lollimon).
-  normal(marshmon).
-  normal(nougatmon).
-  normal(piemon).
-  legendary(betamon).
-  legendary(icemon).
-  legendary(oreomon).
+  % normal(alphamon).
+  % normal(cupmon).
+  % normal(donutmon).
+  % normal(eclairmon).
+  % normal(froyomon).
+  % normal(gingermon).
+  % normal(honeymon).
+  % normal(jellymon).
+  % normal(kitmon).
+  % normal(lollimon).
+  % normal(marshmon).
+  % normal(nougatmon).
+  % normal(piemon).
+  % legendary(betamon).
+  % legendary(icemon).
+  % legendary(oreomon).
 
   /* Health Tokemon */
   health(alphamon,50).

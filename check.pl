@@ -5,9 +5,9 @@ check_win :-
 check_win :-
     choose(_),
     write('Pilih Tokemon terlebih dahulu ketik "help.".'), nl,!.
-    
+
 check_win :-
-    \+legendary(_,_),nl,nl,
+    \+legendary(_),nl,nl,
     write('     Congratulation !!!!! You defeated all the legendary Tokemon. Without the'),nl,
     write('legendary Tokemon,  all the wild  Tokemon is in your  command, with  this you'),nl,
     write('finished your mission. You became the hero of the world, but you want to stay'),nl,
@@ -45,5 +45,5 @@ check_lose :-
     !.
 
 loselegendary :-
-    findall(Legend,legendary(Legend,_),Llegend),
+    findall(Legend,legendary(Legend),Llegend),
 	retractlegendary(Llegend),!.

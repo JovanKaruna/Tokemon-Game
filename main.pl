@@ -73,7 +73,7 @@ start :-
 	write('Pilih salah satu Tokemon dibawah ini untuk menjadi partnermu:'),nl,
     write('   1. alphamon  : fire'),nl,
     write('   2. kitmon    : water'),nl,
-    write('   3. froyomon  : grass'),nl,
+    write('   3. froyomon  : leaves'),nl,
     write('Ketik nomor tokemon seperti "tokemon1." jika memilih alphamon.'),nl,
 	asserta(wild(alphamon)),
     asserta(wild(cupmon)),

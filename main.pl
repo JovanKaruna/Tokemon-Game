@@ -330,7 +330,7 @@ s :-
 printPlace:-
 	player(X,Y),
 	(isGym(X,Y) -> write('Gym Center.');
-	isMeteorite(X,Y) -> write('Meteorite'); write('tanah kosong.')),nl,!.
+	isMeteorite(X,Y) -> write('Meteorite'),nl,nl,levelUp; write('tanah kosong.')),nl,!.
 
 
 /* status. */

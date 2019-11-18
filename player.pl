@@ -76,6 +76,9 @@ addExp(X) :-
     asserta(exp(New)).
 
 upgrade(_) :-
+    \+game(_),!.
+
+upgrade(_) :-
     player(X,Y),
     \+isMeteorite(X,Y),
     write('Kamu hanya bisa melakukan level up di Meteorite!'),nl,!.
@@ -118,16 +121,19 @@ upgrade(Tokemon) :-
 levelUp :-
     player(X,Y),
     isMeteorite(X,Y),
-    write('Kamu bisa melakukan level up Tokemon di sini!'),nl,
-    availableTokemon,
-    write('Ketik "upgrade(X).", X diganti dengan AvailableTokemon yang ada di atas.'),nl,!.
+    write('Kamu bisa melakukan level up dan fusion Tokemon di sini!'),nl,
+    availableTokemon,nl,
+    availableFusion,nl,
+    write('Ketik "upgrade(X).", X diganti dengan AvailableTokemon yang ada di atas.'),nl,
+    write('Ketik "fuse(X).", X diganti dengan AvailableFusion yang ada di atas.'),nl,!.
 
 delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.
 
 delTokemon(Tokemon) :-
 	inventory(Tokemon,_,_,_),
-	retract(inventory(Tokemon,_,_,_)),!.
+    retract(inventory(Tokemon,_,_,_)),
+    asserta(wild(Tokemon)),!.
 
 printStatus([]):-!.
 printStatus([H|T]):-

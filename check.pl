@@ -32,7 +32,7 @@ check_lose :-
 
 check_lose :-
     \+inventory(_,_,_,_),nl,nl,
-    write('    Oh nooo... You don`t have any Tokemon left, all the wild Tokemon is attacking'),nl,
+    write('    Oh nooo... You don\'t have any Tokemon left, all the wild Tokemon is attacking'),nl,
     write('you. You got surrounded and then you died. You failed to save the world, Now  the'),nl,
     write('world is full of Tokemon and the humans hide in fears.'),nl,nl,
     write('          __ __ _____ _____    __    _____ _____ _____ '),nl,
@@ -43,6 +43,10 @@ check_lose :-
 
 check_lose :-
     !.
+
+loselegendary :-
+    notop(1),
+    writeNotOP,!.
 
 loselegendary :-
     findall(Legend,legendary(Legend),Llegend),

@@ -7,6 +7,10 @@
 
 maxInventory(6).
 
+init_player :-
+    notop(1),
+    writeNotOP,!.
+
 init_player:-
     tinggi(T),
     lebar(L),
@@ -19,15 +23,13 @@ init_player:-
     asserta(legendary(betamon)),
     asserta(exp(0)).
 
-
-
 tokemon1 :-
     \+choose(_),
     write('Command ini hanya bisa dipakai sekali saja saat memilih tokemon.'), nl,!.
 
 tokemon1 :-
     choose(_),
-    addTokemon(alphamon,50,50,1),
+    op,addTokemon(alphamon,50,50,1),deop,
     retract(wild(alphamon)),
     write('Congratulations partnermu adalah alphamon.'),nl,
     retract(choose(1)),!.
@@ -38,7 +40,7 @@ tokemon2 :-
 
 tokemon2 :-
     choose(_),
-    addTokemon(kitmon,100,100,1),
+    op,addTokemon(kitmon,100,100,1),deop,
     retract(wild(kitmon)),
     write('Congratulations partnermu adalah kitmon.'),nl,
     retract(choose(1)),!.
@@ -49,7 +51,7 @@ tokemon3 :-
 
 tokemon3 :-
     choose(_),
-    addTokemon(froyomon,75,75,1),
+    op,addTokemon(froyomon,75,75,1),deop,
     retract(wild(froyomon)),
     write('Congratulations partnermu adalah froyomon.'),nl,
     retract(choose(1)),!.
@@ -59,12 +61,20 @@ banyakInv(Banyak) :-
 	length(LBanyak,Banyak).
 
 addTokemon(_,_,_,_) :-
+    notop(1),
+    writeNotOP,!.
+
+addTokemon(_,_,_,_) :-
 	banyakInv(Banyak),
 	maxInventory(Max),
 	Banyak >= Max,!,fail.
 
 addTokemon(Tokemon,Health,MaxHealth,Level) :-
 	assertz(inventory(Tokemon,Health,MaxHealth,Level)),!.
+
+addExp(_) :-
+    notop(1),
+    writeNotOP,!.
 
 addExp(X) :-
     exp(Old),
@@ -105,7 +115,7 @@ upgrade(Tokemon) :-
         (E >= NeededExp) ->
         (
             retract(inventory(Tokemon,Health,MaxHealth,Level)),
-            addExp(-NeededExp),
+            op,addExp(-NeededExp),deop,
             NewHealth is Health + 10,
             NewMaxHealth is MaxHealth + 10,
             NewLevel is Level + 1,
@@ -123,6 +133,10 @@ levelUp :-
     availableFusion,nl,
     write('Ketik "upgrade(X).", X diganti dengan AvailableTokemon yang ada di atas.'),nl,
     write('Ketik "fuse(X).", X diganti dengan AvailableFusion yang ada di atas.'),nl,!.
+
+delTokemon(_) :-
+    notop(1),
+    writeNotOP,!.
 
 delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.

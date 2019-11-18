@@ -1,6 +1,7 @@
 :- include('map.pl').
 :- include('check.pl').
 :- include('saveload.pl').
+:- include('op.pl').
 :- initialization(nl).
 :- initialization(write('                                      ,\'\\')).
 :- initialization(nl).
@@ -31,7 +32,7 @@
 :- initialization(nl).
 :- initialization(write('To load use command "loadFile(Filename)."')).
 :- initialization(nl).
-
+:- initialization(asserta(notop(1))).
 
 
 start :-
@@ -63,7 +64,7 @@ start :-
     write('sudah ditangkap pemerintah. Pemain  akan diterjunkan  langsung ke  pulau Tokeland'),nl,
     write('yang sekarang  sudah menjadi sarang para tokemon untuk mengungkapkan misteri para'),nl,
     write('Tokemon.'),nl,nl,
-	init_map, help,init_player ,nl,
+	init_map, help,(op,init_player,deop),nl,
     write('Legends:'),nl,
     write('    - X = Pagar'),nl,
     write('    - P = Player'),nl,

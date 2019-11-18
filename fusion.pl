@@ -45,9 +45,9 @@ fuse(Tokemon) :-
     inventory(A,_,_,LevelA),
     inventory(B,_,_,LevelB),
     inventory(C,_,_,LevelC),
-    delTokemon(A),
+    op,delTokemon(A),
     delTokemon(B),
-    delTokemon(C),
+    delTokemon(C),deop,
     health(Tokemon,RealHealth),
     Level1 is max(LevelA,LevelB),
     Level is max(Level1,LevelC),
@@ -56,5 +56,6 @@ fuse(Tokemon) :-
         (retract(inventory(Tokemon,_,_,_)));
         (retract(wild(Tokemon)))
     ),
-    addTokemon(Tokemon,Health,Health,Level),
+    op,addTokemon(Tokemon,Health,Health,Level),deop,
+	(wild(Tokemon) -> retract(wild(Tokemon))),
     write('Tokemon berhasil di-fusion!'),nl,!.

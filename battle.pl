@@ -23,12 +23,12 @@ pick(_):-
 pick(X):-
 	battle(0),
 	\+inventory(X,_,_,_),
-	write('"You don`t have that Tokemon!"'),!.
+	write('"You don\'t have that Tokemon!"'),!.
 
 pick(X):-
 	battle(0),
 	inventory(X,Health,MaxHealth,Level),
-	delTokemon(X),
+	op,delTokemon(X),deop,
 	write('You :    "'), write(X),write(' I choose you!"'),nl,nl,
 	asserta(inbattle(X,Health,MaxHealth,Level)),
 	effective,
@@ -71,10 +71,10 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	op,addTokemon(X,Health,MaxHealth,Level),deop,
 	retract(battle(2)),
 	asserta(battle(3)),
-	addExp(MaxHealthEnemy),
+	op,addExp(MaxHealthEnemy),deop,
 	(special(1) -> retract(special(1)),!;!),
 	(specialenemy(1) -> retract(specialenemy(1)),!;!),
     check_win,!.
@@ -92,10 +92,10 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	op,addTokemon(X,Health,MaxHealth,Level),deop,
 	retract(battle(2)),
 	asserta(battle(3)),
-	addExp(MaxHealthEnemy),
+	op,addExp(MaxHealthEnemy),deop,
 	(special(1) -> retract(special(1)),!;!),
 	(specialenemy(1) -> retract(specialenemy(1)),!;!),
     check_win,!.
@@ -113,10 +113,10 @@ attack :-
 	write(Y),write(' faints! Do you want to capture '),write(Y),
 	write('?  (capture/0 to capture, otherwise move away.)'),nl,
 	retract(inbattle(X,Health,MaxHealth,Level)),
-	addTokemon(X,Health,MaxHealth,Level),
+	op,addTokemon(X,Health,MaxHealth,Level),deop,
 	retract(battle(2)),
 	asserta(battle(3)),
-	addExp(MaxHealthEnemy),
+	op,addExp(MaxHealthEnemy),deop,
 	(special(1) -> retract(special(1)),!;!),
 	(specialenemy(1) -> retract(specialenemy(1)),!;!),
     check_win,!.
@@ -137,8 +137,8 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 6 -> specialattack_enemy;
-	enemyattack),!.
+	(Specialenemy >= 6 -> (op,specialattack_enemy,deop);
+	(op,enemyattack,deop)),!.
 
 % player attack 3 / 2 dan lawan special attack 0.5
 attack :-
@@ -157,8 +157,8 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 6 -> specialattack_enemy;
-	enemyattack),!.
+	(Specialenemy >= 6 -> (op,specialattack_enemy,deop);
+	(op,enemyattack,deop)),!.
 
 % player attack 0.5 dan lawan special attack 3 / 2
 attack :-
@@ -177,8 +177,8 @@ attack :-
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
 	random(1,8,Specialenemy),
-	(Specialenemy >= 6 -> specialattack_enemy;
-	enemyattack),!.
+	(Specialenemy >= 6 -> (op,specialattack_enemy,deop);
+	(op,enemyattack,deop)),!.
 
 % player attack dan lawan attack
 attack :-
@@ -194,7 +194,7 @@ attack :-
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
-	enemyattack,!.
+	(op,enemyattack,deop),!.
 
 % player attack 3 / 2 dan lawan attack 0.5
 attack :-
@@ -212,7 +212,7 @@ attack :-
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
-	enemyattack,!.
+	(op,enemyattack,deop),!.
 
 %  player attack 0.5 dan lawan attack 3 / 2
 attack :-
@@ -230,7 +230,11 @@ attack :-
 	CurrentHealth is EnemyHealth - DamageToEnemy,
 	asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),
 	writeBattle,
-	enemyattack,!.
+	(op,enemyattack,deop),!.
+
+enemyattack :-
+    notop(1),
+    writeNotOP,!.
 
 % enemy attack biasa
 enemyattack :-
@@ -321,7 +325,7 @@ specialattack :-
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
     CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack);
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,(op,enemyattack,deop));
 	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
 	!.
 
@@ -340,7 +344,7 @@ specialattack :-
     write('It is super effective!'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
 	CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack);
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,(op,enemyattack,deop));
 	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
 	!.
 
@@ -361,20 +365,13 @@ specialattack :-
     write('It is not super effective...'),nl,
 	write('You dealt '),write(DamageToEnemy),write(' damage to '), write(Y),nl,nl,
     CurrentHealth is EnemyHealth - DamageToEnemy,
-	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,enemyattack);
+	(DamageToEnemy < EnemyHealth -> (asserta(enemy(Y,CurrentHealth,MaxHealthEnemy,LevelEnemy)),writeBattle,(op,enemyattack,deop));
 	DamageToEnemy >= EnemyHealth -> (asserta(enemy(Y,0,MaxHealthEnemy,LevelEnemy)),attack)),
 	!.
 
-
 specialattack_enemy :-
-	\+battle(2),
-	write('Command ini tidak bisa digunakan jika tidak dalam battle'),nl,!.
-
-
-specialattack_enemy :-
-	battle(2),
-	\+specialenemy(1),
-	write('Special attacks can only be used once per battle!'),nl,!.
+    notop(1),
+    writeNotOP,!.
 
 % enemy attack special attack
 specialattack_enemy :-
@@ -440,11 +437,11 @@ capture :-
 	write('You cannot capture another Tokemon! You have to drop one first.'),nl,!.
 
 capture :-
-	
+
 	battle(3),
 	enemy(Y,_,MaxHealth,Level),
 	wild(Y),
-	addTokemon(Y,MaxHealth,MaxHealth,Level),
+	op,addTokemon(Y,MaxHealth,MaxHealth,Level),deop,
     retract(wild(Y)),
 	write(Y),
 	write(' is captured!'),nl,
@@ -454,7 +451,7 @@ capture :-
 	battle(3),
 	enemy(Y,_,MaxHealth,Level),
 	legendary(Y),
-	addTokemon(Y,MaxHealth,MaxHealth,Level),
+	op,addTokemon(Y,MaxHealth,MaxHealth,Level),deop,
     retract(legendary(Y)),
 	write(Y),
 	write(' is captured!'),nl,
@@ -477,7 +474,7 @@ drop(X) :-
 	maxInventory(Max),
 	Banyak >= Max,
 	\+inventory(X,_,_,_),
-	write('You don`t have that Tokemon!'),!.
+	write('You don\'t have that Tokemon!'),!.
 
 drop(X) :-
 	battle(3),
@@ -486,7 +483,7 @@ drop(X) :-
 	Banyak >= Max,
 	inventory(X,_,_,_),
 	write('You dropped '), write(X),nl,nl,
-	delTokemon(X),
+	op,delTokemon(X),deop,
 	capture,!.
 
 effective :-

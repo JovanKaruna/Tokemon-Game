@@ -27,8 +27,7 @@ writeExp :-
     write('exp('), write(X), write(').'), nl,!.
 
 writeLegendary :-
-    forall(legendary(Name,MaxHealth),(write('legendary('),write(Name),
-    write(','),write(MaxHealth),write(').'),nl)),!.
+    forall(legendary(Name),(write('legendary('),write(Name),write(').'),nl)),!.
 
 writeLebarTinggi :-
     lebar(L),

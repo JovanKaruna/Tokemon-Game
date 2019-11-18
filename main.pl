@@ -130,6 +130,8 @@ help :-
     write('    map. -- look at the map'),nl,
     write('    heal. -- heal Tokemon in inventory if in gym center'),nl,
     write('    status. -- show your status'),nl,
+	write('    upgrade(Tokemon). -- Level up Tokemon'),nl,
+	write('    fuse(Tokemon). -- Fusion your Tokemon'),nl,
     write('    save(Filename). -- save your game'),nl,
     write('    loadFile(Filename). -- load previously saved game'),nl,!.
 

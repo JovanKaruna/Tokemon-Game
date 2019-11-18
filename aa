@@ -1,0 +1,9 @@
+inventory(alphamon,50,50,1).
+legendary(betamon,420).
+legendary(icemon,420).
+legendary(oreomon,1000).
+lebar(25).
+tinggi(14).
+player(2,13).
+heal(1).
+exp(5).

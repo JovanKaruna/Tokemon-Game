@@ -3,6 +3,7 @@
 :- dynamic(inventory/4).
 :- dynamic(legendary/2).
 :- dynamic(choose/1).
+:- dynamic(exp/1).
 
 maxInventory(6).
 
@@ -18,7 +19,8 @@ init_player:-
     health(icemon,MaxHealth1),
     asserta(legendary(icemon,MaxHealth1)),
     health(icemon,MaxHealth2),
-    asserta(legendary(betamon,MaxHealth2)).
+    asserta(legendary(betamon,MaxHealth2)),
+    asserta(exp(0)).
 
 
 
@@ -66,6 +68,59 @@ addTokemon(_,_,_,_) :-
 
 addTokemon(Tokemon,Health,MaxHealth,Level) :-
 	assertz(inventory(Tokemon,Health,MaxHealth,Level)),!.
+
+addExp(X) :-
+    exp(Old),
+    retract(exp(Old)),
+    New is Old+X,
+    asserta(exp(New)).
+
+upgrade(_) :-
+    player(X,Y),
+    \+isMeteorite(X,Y),
+    write('Kamu hanya bisa melakukan level up di Meteorite!'),nl,!.
+
+upgrade(Tokemon) :-
+    player(X,Y),
+    isMeteorite(X,Y),
+    \+inventory(Tokemon,_,_,_),
+    write('Kamu tidak memiliki Tokemon tersebut!'),nl,!.
+    
+upgrade(Tokemon) :-
+    player(X,Y),
+    isMeteorite(X,Y),
+    inventory(Tokemon,_,_,Level),
+    (Level =:= 5),
+    write('Tokemon tersebut sudah pada level maksimum!'),nl,!.
+    
+
+upgrade(Tokemon) :-
+    player(X,Y),
+    isMeteorite(X,Y),
+    exp(E),
+    inventory(Tokemon,Health,MaxHealth,Level),
+    (Level < 5),
+    NeededExp is 10 + (Level*10),
+    (
+        (E >= NeededExp) ->
+        (
+            retract(inventory(Tokemon,Health,MaxHealth,Level)),
+            addExp(-NeededExp),
+            NewHealth is Health + 10,
+            NewMaxHealth is MaxHealth + 10,
+            NewLevel is Level + 1,
+            asserta(inventory(Tokemon,NewHealth,NewMaxHealth,NewLevel)),
+            write(Tokemon),write(' naik ke level '),write(NewLevel),write('!'),nl
+        );
+        (write('EXP tidak cukup untuk melakukan level up!'),nl)
+    ),!.
+
+levelUp :-
+    player(X,Y),
+    isMeteorite(X,Y),
+    write('Kamu bisa melakukan level up Tokemon di sini!'),nl,
+    availableTokemon,
+    write('Ketik "upgrade(X).", X diganti dengan AvailableTokemon yang ada di atas.'),nl,!.
 
 delTokemon(Tokemon) :-
 	\+inventory(Tokemon,_,_,_),!,fail.

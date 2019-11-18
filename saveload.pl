@@ -18,8 +18,13 @@ save(FileName) :-
     writeLebarTinggi,
     writePlayer,
     writeHeal,
+    writeExp,
     told, 
     write('Save berhasil dilakukan !'),nl,!.
+
+writeExp :-
+    exp(X),
+    write('exp('), write(X), write(').'), nl,!.
 
 writeLegendary :-
     forall(legendary(Name,MaxHealth),(write('legendary('),write(Name),
@@ -54,7 +59,7 @@ loadFile(_) :-
     write('Kamu tidak bisa memulai game lainnya ketika sudah start.'),nl,!.
 
 loadFile(FileName):-
-    \+file_exists(FileName),
+    \+exists_file(FileName),
     write('File yang anda masukkan tidak ada...'),nl, 
     write('Mohon tulis ulang filename yang benar atau "start." untuk memulai game.'),nl,!.
 
@@ -72,7 +77,7 @@ read_File_Lines(Stream,[]) :-
 read_File_Lines(Stream,[H|T]) :-
     \+ at_end_of_stream(Stream),
     read(Stream,H),
-    readFileLines(Stream,T).
+    read_File_Lines(Stream,T).
 
 addline([]) :- !.
 addline([H|T]):-

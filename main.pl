@@ -114,7 +114,7 @@ help :-
 
 help  :-
 	battle(0),
-	write('Ketik "pick(X).", X diganti dengan AvailableTokemon yang ada diatas.'),nl,
+	write('Ketik "pick(X).", X diganti dengan AvailableTokemon yang ada di atas.'),nl,
 	write('untuk mengetahui Available Tokemon ketik "availableTokemon.".'),nl,!.
 
 help :-
@@ -168,6 +168,7 @@ quit :-
 	retract(game(_)),
 	retract(lebar(_)),
 	retract(tinggi(_)),
+	retract(exp(_)),
 	findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
 	findall(Legend,legendary(Legend,_),Llegend),
 	retractinventory(LTokemon),
@@ -343,6 +344,9 @@ status :-
 	write('Command ini hanya bisa dipakai setelah command "start.".'), nl,!.
 
 status :-
+	write('Your EXP: '),
+	exp(E),
+	write(E),nl,nl, 
 	findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),write('Your Tokemon:'),
 	printStatus(LTokemon),nl,
 	findall(Tokemon,legendary(Tokemon,_),Llegendary),nl,

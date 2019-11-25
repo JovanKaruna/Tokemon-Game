@@ -19,9 +19,13 @@ save(FileName) :-
     writePlayer,
     writeHeal,
     writeExp,
+    writeWild,
     told, 
     write('Save berhasil dilakukan !'),nl,!.
-
+writeWild :-
+    forall(wild(Tokemon),
+    (write('wild('), write(Tokemon),write(').'), nl)), !.
+    
 writeExp :-
     exp(X),
     write('exp('), write(X), write(').'), nl,!.

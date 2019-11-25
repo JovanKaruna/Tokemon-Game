@@ -445,6 +445,15 @@ run :-
 	random(1,10,Peluang),
 	(Peluang >= 5 -> write('Kamu berhasil kabur...'),nl,retract(battle(_));
 	write('Kamu gagal untuk kabur!'),nl,nl,	fight),!.
+flee :-
+    notop(1),
+    writeNotOP,!.
+flee :-
+	\+battle(1),
+	write('command ini tidak dapat digunakan saat ini'),nl,!.
+flee :-
+	battle(1),
+	write('Kamu berhasil kabur...'),nl,retract(battle(_)),!.
 
 availableTokemon :-
 	write('Available Tokemons: '),findall(Tokemon,inventory(Tokemon,_,_,_),LTokemon),
